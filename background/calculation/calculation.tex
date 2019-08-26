@@ -32,9 +32,9 @@
 \renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
 
 \usepackage{titlesec} % Allows customization of titles
-\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
-\renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
-\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+%\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+%\renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
+%\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
 \titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
 
 \usepackage{fancyhdr} % Headers and footers
@@ -59,12 +59,12 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Muon Convolution}} % Article title
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Current Approach to Muon Convolution}} % Article title
 
 \author{
 \large
 %\textsc{Jason Bono}\thanks{Thanks to David Brown of Berkley Lab}\\[2mm] % Your name
-%\textsc{Jason Bono}\\[2mm] % Your name
+\textsc{Jason Bono}\\[2mm] % Your name
 %\normalsize Fermilab \\ % Your institution
 %\normalsize \href{mailto:jbono@fnal.gov}{jbono@fnal.gov} % Your email address
 \vspace{-5mm}
@@ -93,97 +93,300 @@
 %	ARTICLE CONTENTS
 %----------------------------------------------------------------------------------------
 
-\begin{multicols}{2} % Two-column layout throughout the main article text
 
-\section{Average Field}
+\section{Framework}
+\begin{multicols}{2} % Two-column layout throughout the main article text
+\subsection{Average Field}
 
 
 We want the average scalar (vertical component) B field experienced by the muons
 \begin{equation}
 \left\langle B \right\rangle = B(\textbf{x},t) \otimes M(\textbf{x},t)
 \end{equation}
-This involves convolving the spacial and time structure of the muon beam and the B field. The spacial structures can be expanded into moments as $B(\textbf{x},t) = \Sigma_n b_n(t)$ and $M(\textbf{x},t) = \Sigma_n m_n(t)$ where $b_n(t)$  and $m_n(t)$ are the nth field and muon moment. However, since there will be different uncertainty on the measurement of each moment, we may need to take the weighted averages
+This involves convolving the spacial and time structure of the muon beam and the B field. The spacial structures can be expanded into moments as $B(\textbf{x},t) = \Sigma_n b_n(t)$ and $M(\textbf{x},t) = \Sigma_n m_n(t)$ where $b_n(t)$  and $m_n(t)$ are the nth field and muon moment. However,  there will be different uncertainty on the measurement of each moment and may want to weight the n contributions to final result accordingly, i.e. take the weighted sum
 \begin{equation}
-B(\textbf{x},t) = \frac{\Sigma_n b_n(t) w^b_n}{W^{I}}
+B(\textbf{x},t) = \Sigma_n b_n(t) w^{\text{b}}_n 
 \end{equation}
 and 
 \begin{equation}
-M(\textbf{x},t) = \frac{\Sigma_n m_n(t) w^m_n}{W^{i}
+M(\textbf{x},t) = \Sigma_n m_n(t) w^{\text{m}}_n
 \end{equation}
-where we let $W \equiv \Sigma_n w_n$. Note that $w_n$ has no time structure. 
-
-
-The average experienced B field can then be expressed as the sum of products of the moments
+where $w^{\text{x}}_n$ implicitly obeys some normalization condition, such as 
+\begin{equation}
+\Sigma^N_{n=1}  w^{\text{x}}_n = N
+\end{equation}
+Also note that $w^x_n$ has no time structure. 
+The average experienced B field can now be expressed as the weighted sum of products of the moments
 \begin{equation}
 \left\langle B \right\rangle = 
-\Sigma_n (b_{n}(t) \otimes m_{n}(t))
+\Sigma_n b_n(t) w^{\text{b}_n}  \otimes  
+\Sigma_n m_n(t) w^{\text{m}_n} = 
+%\Sigma_n (b_{n}(t) \otimes m_{n}(t))
 \end{equation}
-wherein the convolution can be expressed to a weighted average
+or
 \begin{equation}
 \left\langle B \right\rangle = 
-\Sigma_n \frac{ \int b_{n}(t) m_{n}(t) c_n(t) dt}{\int c_n(t) dt}
+\Sigma_n w^{\text{b}}_n w^{\text{m}}_n (b_{n}(t) \otimes m_{n}(t))
 \end{equation}
-where $c_n(t)$ is, for now, a general weighting factor that can absorb various effects, such as the changing number of muons, field uncertainties, etc. Identifying $c_n(t)$ exactly is reserved for a later section. 
+or, letting $w_n = w^{\text{b}}_n w^{\text{m}}_n$,
+\begin{equation}
+\left\langle B \right\rangle =  \Sigma_n w_n (b_{n}(t) \otimes m_{n}(t))
+\end{equation}
+We can express what is left of the convolution as a weighted average
+\begin{equation}
+b_{n}(t) \otimes m_{n}(t) = 
+\frac{ \int b_{n}(t) m_{n}(t) c_n(t) dt}{\int c_n(t) dt}
+\end{equation}
+where $c_n(t)$ is, for now, a general weighting factor that can absorb various effects, such as the changing number of muons, field uncertainties, etc. Identifying $c_n(t)$ exactly is reserved for a later section. Substituting the above expression in for $\left\langle B \right\rangle$, we get
+\begin{equation}
+\left\langle B \right\rangle =
+ \Sigma_n w_n \frac{ \int b_{n}(t) m_{n}(t) c_n(t) dt}{\int c_n(t) dt}
+\end{equation}
+
 
 Provided time is discretized finely enough so that, within any single interval, the spacial structures are effectively constant, we can write
 \begin{equation}
 	\left\langle B \right\rangle = 
-	\Sigma_{n}\frac{\Sigma_{t} b_{nt} m_{nt} c_{nt}}{\Sigma_t c_{nt}}
+	\Sigma_{n} w_n \frac{\Sigma_{t} b_{nt} m_{nt} c_{nt}}{\Sigma_t c_{nt}}
 \end{equation}
 
-Let $\Sigma_{nt} c_{nt} = \Sigma_{n} C_n $. Then
+Letting $\Sigma_{nt} c_{nt} = \Sigma_{n} C_n $ gives
 \begin{equation}
-\left\langle B \right\rangle \equiv
-\Sigma_n \left\langle B \right\rangle_n = 
-\frac{1}{C_n} [\Sigma_{nt} b_{nt} m_{nt} c_{nt}]
+\boxed{
+\left\langle B \right\rangle =
+\Sigma_{n}[ \frac{w_n}{C_n} (\Sigma_{t} b_{nt} m_{nt} c_{nt})].
+}
 \end{equation}
-with
+Note that  we could let $C_n$ absorb $w_n$, but to avoid confusion, we will not do so. Finally, we can write the contribution from a single (nth) moment as
 \begin{equation}
 \boxed{
 	\left\langle B \right\rangle_n =
-	\frac{1}{C_n}\Sigma_{t} [b_{nt} m_{nt} c_{nt}] = 
-	\frac{1}{C_n}\Sigma_t [c_{nt} \left\langle B \right\rangle_{nt}]
+	[ \frac{w_n}{C_n} (\Sigma_{t} b_{nt} m_{nt} c_{nt})]
 }
 \end{equation}
-where we let $	\left\langle B \right\rangle_{n\tau} \equiv b_{n\tau} m_{n\tau}$
-
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-
-\section{Error on Average  Field}
-Assuming that the muon and field structures ($m_{nt}$ and $b_{nt}$) are uncorrelated, the varience in the nth moment at time $t$, from the variational principle, is
-
-\begin{equation}
-\sigma^2_{nt} \equiv
-(\Delta \left\langle B \right\rangle_{nt})^2 =
-(\frac{d \left\langle B \right\rangle_{nt}}{db_{nt}}\Delta b_{nt})^2 +
-(\frac{d \left\langle B \right\rangle_{nt}}{dm_{nt}}\Delta m_{nt})^2 =
-(m_{nt} \Delta b_{nt})^2 + (b_{nt}\Delta m_{nt})^2 
-\end{equation}
-We can then say that
-
-\begin{equation}
-\left\langle B \right\rangle_{nt} \pm \sigma_{nt} =
-b_{nt} m_{nt} \pm
-\sqrt{(m_{nt} \Delta b_{nt})^2 + (b_{nt}\Delta m_{nt})^2}
-\end{equation}
-
-
-Assume the uncertainty on $c_t$ is zero. We can write 
+and that contribution in a single time-slice at $\tau$ as 
 \begin{equation}
 \boxed{
-	\left\langle B \right\rangle_{n} \pm \sigma_{n} =
-	\frac{1}{C}\Sigma_t c_t [\left\langle B \right\rangle_{nt} \pm \sigma_{nt}] = 
-	\frac{1}{C}\Sigma_t c_t [b_{nt} m_{nt} \pm \sqrt{(m_{nt} \Delta b_{nt})^2 + (b_{nt}\Delta m_{nt})^2}]
+		\left\langle B \right\rangle_{n\tau} =
+		 \frac{w_n b_{n\tau} m_{n\tau} c_{n\tau}}{C_n}
 }
 \end{equation}
-
-
 
 
 \end{multicols}
+\newpage
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Error on Average Field}
+Assuming that the muon and field structures ($m_{nt}$ and $b_{nt}$) are uncorrelated. The variance in the nth moment at time $t$, $\sigma^2_{nt} \equiv (\Delta \left\langle B \right\rangle_{nt})^2$, is 
+
+\begin{equation}
+\sigma^2_{nt} =
+(\frac{d \left\langle B \right\rangle_{nt}}{db_{nt}}\Delta b_{nt})^2 +
+(\frac{d \left\langle B \right\rangle_{nt}}{dm_{nt}}\Delta m_{nt})^2 + 
+(\frac{d \left\langle B \right\rangle_{nt}}{dc_{nt}}\Delta c_{nt})^2 
+\end{equation}
+
+or 
+\begin{equation}
+\boxed{
+\sigma^2_{nt} =
+\frac{w^2_n}{C^2_n}[(m_{nt} c_{nt} \Delta b_{nt})^2 + (b_{nt} c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} \Delta c_{nt})^2 ]
+}
+\end{equation}
+
+substituting the above expression into
+\begin{equation}
+\sigma^2_{n} = \Sigma_t  \sigma^2_{nt} 
+\end{equation}
+gives 
+\begin{equation}
+\boxed{
+\sigma^2_{n} = \frac{w^2_n}{C^2_n} \Sigma_t  [(m_{nt} c_{nt} \Delta b_{nt})^2 + (b_{nt} c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} \Delta c_{nt})^2 ]
+}
+\end{equation}
+Similarly, substituting the above expression into
+\begin{equation}
+\sigma^2 = \Sigma_n  \sigma^2_{n} 
+\end{equation}
+gives
+\begin{equation}
+\boxed{
+	\sigma^2 = \Sigma_n [\frac{w^2_n}{C^2_n} \Sigma_t  [(m_{nt} c_{nt} \Delta b_{nt})^2 + (b_{nt} c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} \Delta c_{nt})^2 ]]
+}
+\end{equation}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Application}
+\subsection{A List}
+%\begin{multicols}{2}
+Applying the framework is just a matter of connecting the familiar observables to the variables introduced in this document. Below is a list of such connections. The list is only intended to be instructive for now, so many items are left out. Eventually, we will want to define everything exactly.
+\begin{itemize}
+	\item $b_{1t}$  The dipole field in time-slice $t$
+	\item $m_{1t}$ The muon beam's dipole moment in time-slice $t$ (always equal to unity)
+	\item $b_{2t}$ The normal-quadrupole  field in time-slice $t$
+	\item $m_{2t}$ The muon beam's mean horizontal position in time-slice $t$
+	 \item $\Delta b_{2t}$ The error in the normal-quadrupole  field in time-slice $t$
+	 \item $\Delta b_{2t}$ The spread (RMS) in the muon beam's mean horizontal position in time-slice $t$	
+	 \item $c_{nt}$ Nominally identified with CTAGs in time-slice $t$
+	 \begin{itemize}
+	 	 \item Then $c_{nt}$  is reduced to $c_{t}$ and $C_{n}$ to $C$, where $C$ is the total number of CTAGs integrated over the time interval in question 
+	 	 \item However, if we want to do an uncertainty weighted average, $c_{nt}$ is the natural variable to do this with
+	 	 \item  $\Delta c_{nt}$ Will probably be set to zero, but this needs to be thought about more
+	 \end{itemize}
+	 \item  $w_{n}$ Nominally set to 1 or 0 for moments that are considered or not considered in the final sum over n
+	 \begin{itemize}
+	 	 \item However, we may want to explicitly weight some moments more than others, and $w_{n}$ is the natural variable to do this with
+	 	 \item  $\Delta w_{n}$ has been assumed to be zero and will almost certainly remain this way
+	 \end{itemize}
+	
+\end{itemize}
+%\end{multicols}
+
+\newpage
+\subsection{Simple Examples}
+%\begin{multicols}{2}
+\subsubsection{Dipole}
+Here we calculate  $\left\langle B \right\rangle_1$ and $\sigma_1$. We have
+\begin{itemize}
+	\item $b_{1t} = \text{D}$ (dipole)
+	\item $\Delta b_{1t} = \text{eD}$ 
+	\item $c_{1t} = c_t = \text{ctag}$ (number of muons)
+	\item $\Delta c_{1t} = \Delta c_t = 0$ 
+	\item $C_{1} = C = \text{ctag\_total}$  (cumulative sum of number of muons)
+	\item $m_{1t} = 1$  (by definition)
+	\item $\Delta m_{1t} = 0$.
+	\item $w_{1} = 1$ (by definition)
+\end{itemize}
+Subbing some of these values into the relevant equations, we get
+\begin{equation}
+		\left\langle B \right\rangle_1 =
+		 \frac{\Sigma_{t} b_{1t} c_{t}}{C} = 
+		  \frac{\Sigma_{t} D_t \text{ctag}_{t}}{\text{ctag\_total}}
+\end{equation}
+and 
+\begin{equation}
+	\sigma_{1} = \frac{1}{C}\sqrt{\Sigma_t  [(c_{t} \Delta b_{1t})^2 ]} = 
+	\frac{\sqrt{\Sigma_t  [(\text{eD}_t \text{ctag}_t)^2 ]} }{\text{ctag\_total}}
+\end{equation}
+
+
+
+
+
+\subsubsection{Normal Quadrupole}
+Here we calculate  $\left\langle B \right\rangle_2$ and $\sigma_2$. We have
+\begin{itemize}
+	\item $b_{2t} = \text{NQ}$ (normal quadrupole))
+	\item $\Delta b_{2t} = \text{eNQ}$ 
+	\item $c_{2t} = c_t = \text{ctag}$ (number of muons)
+	\item $\Delta c_{2t} = \Delta c_t = 0$ 
+	\item $C_{2} = C = \text{ctag\_total}$  (cumulative sum of number of muons)
+	\item $m_{2t}$  is the mean horizontal beam position
+	\item $\Delta m_{2t}$ is the horizontal RMS of the beam about its mean 
+	\item $w_{2} = 1$ (by definition)
+\end{itemize}
+We get
+\begin{equation}
+\left\langle B \right\rangle_2 =
+\frac{\Sigma_{t} m_{2t} b_{2t} c_{t}}{C} = 
+\frac{\Sigma_{t} m_{2t} NQ_t \text{ctag}_{t}}{\text{ctag\_total}}
+\end{equation}
+
+\begin{equation}
+	\sigma_{2} =
+	 \frac{1}{C} \sqrt{\Sigma_t  [(m_{2t} c_{t} \Delta b_{2t})^2 + (b_{2t} c_{t} \Delta m_{2t})^2  ]} =
+	 \frac{\sqrt{\Sigma_t  [(\text{eNQ}_t  \text{ctag}_t m_{2t} )^2 + (\text{NQ}_t  \text{ctag}_t \Delta m_{2t})^2  ]} }{\text{ctag\_total}}
+\end{equation}
+
+
+
+\subsubsection{Skew Quadrupole}
+Here we calculate  $\left\langle B \right\rangle_3$ and $\sigma_3$. We have
+\begin{itemize}
+	\item $b_{3t} = \text{SQ}$ (skew quadrupole)
+	\item $\Delta b_{3t} = \text{eSQ}$ 
+	\item $c_{3t} = c_t = \text{ctag}$ (number of muons)
+	\item $\Delta c_{3t} = \Delta c_t = 0$ 
+	\item $C_{3} = C = \text{ctag\_total}$  (cumulative sum of number of muons) 
+	\item $m_{3t}$  is the mean vertical beam position
+	\item $\Delta m_{3t}$ is the vertical RMS of the beam about its mean 
+	\item $w_{3} = 1$ (by definition)
+\end{itemize}
+We get
+\begin{equation}
+\left\langle B \right\rangle_3 =
+\frac{\Sigma_{t} m_{3t} b_{3t} c_{t}}{C} = 
+\frac{\Sigma_{t} m_{3t} SQ_t \text{ctag}_{t}}{\text{ctag\_total}}
+\end{equation}
+
+\begin{equation}
+\sigma_{3} =
+\frac{1}{C} \sqrt{\Sigma_t  [(m_{3t} c_{t} \Delta b_{3t})^2 + (b_{3t} c_{t} \Delta m_{3t})^2  ]} =
+\frac{\sqrt{\Sigma_t  [(\text{eSQ}_t  \text{ctag}_t m_{3t} )^2 + (\text{SQ}_t  \text{ctag}_t \Delta m_{3t})^2  ]} }{\text{ctag\_total}}
+\end{equation}
+
+
+\subsubsection{Adding contributions from the first three moments}
+In the above examples we found the contributions from moments 1,2, and 3. To get the total contribution, we take the simple sum
+\begin{equation}
+\left\langle B \right\rangle =
+\Sigma^3_{n=1} \left\langle B \right\rangle_n =
+\frac{\Sigma_{t} c_t [(b_{1t}) + (m_{2t} b_{2t}) + (m_{3t} b_{3t})] }{C} 
+\end{equation}
+For the total variance, we also take the simple sum,
+\begin{equation}
+\sigma^2 = 
+\Sigma^3_{n=1} \sigma^2_n = 
+\frac{1}{C^2} \Sigma_t c^2_t [(\Delta b_{1t})^2 +
+(m_{2t} \Delta b_{2t})^2 + (b_{2t} \Delta m_{2t})^2 + 
+(m_{3t} \Delta b_{3t})^2 + (b_{3t} \Delta m_{3t})^2 
+] 
+\end{equation}
+and so the error is
+\begin{equation}
+\sigma = 
+\frac{\sqrt{\Sigma_t c^2_t [(\Delta b_{1t})^2 +
+	(m_{2t} \Delta b_{2t})^2 + (b_{2t} \Delta m_{2t})^2 + 
+	(m_{3t} \Delta b_{3t})^2 + (b_{3t} \Delta m_{3t})^2 
+	]}}{C}
+\end{equation}
+
+
+Note that, in general, the values $w_{1,2,3}$ could have been made unequal in in order to weight the contributions from some moments over others, possibly based on sources of uncertainty. Similarly, identifying $c_{nt}$ with ctags alone allowed for its contraction into $c_t$. This may not always be the case. For example, we may allow the $c_{nt}$ weighting factor to incorporate uncertainty from the field determination, which may have distinct effects on the various moments.
+
+
+\newpage
+\subsection{Further Questions }
+Below are some questions that need to be answered:
+
+\begin{itemize}
+	\item What are the problems with the approach to average and error on average?
+	\item Are non-binary weights for $w_n$ needed?
+	\begin{itemize}
+		\item If so, what normalization condition should we use? 
+	\end{itemize}
+	\item Should anything other than ctags be put into $c_{tn}$? Eg the field uncertainty?
+	\item Does the accumulation of error over time, as it's formulated make sense?
+		\begin{itemize}
+		\item Does our error calculation have built-in invariance to sample-rate?
+	\end{itemize}
+	\item How should we use the muon distribution to get the higher order moments (ie above quadrupole)
+	
+\end{itemize}
+
+
+
+
 
 \end{document}
 
