@@ -1,0 +1,439 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+
+\documentclass[twoside]{article}
+ 
+\usepackage{textcomp}
+
+
+\usepackage{lipsum} % Package to generate dummy text throughout this template
+
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+\usepackage{amsmath}
+
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+\usepackage{multicol} % Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{hyperref} % For hyperlinks in the PDF
+
+\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec} % Allows customization of titles
+\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+\renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+%\fancyhead[C]{Convolution $\bullet$ August 2019} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+\usepackage[english]{babel}
+\usepackage{graphicx}
+
+
+%change the margins
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Muon Convolution}} % Article title
+
+\author{
+\large
+%\textsc{Jason Bono}\thanks{Thanks to David Brown of Berkley Lab}\\[2mm] % Your name
+%\textsc{Jason Bono}\\[2mm] % Your name
+%\normalsize Fermilab \\ % Your institution
+%\normalsize \href{mailto:jbono@fnal.gov}{jbono@fnal.gov} % Your email address
+\vspace{-5mm}
+}
+\date{}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Insert title
+
+\thispagestyle{fancy} % All pages have headers and footers
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+%\begin{abstract}
+%
+%\noindent The accurate reconstruction of a particle track using drift chambers requires knowledge of the paths taken by electrons within a gas under the influence of an electric and magnetic field. At present, the magnetic field, which as we will show increases the total drift time by up to 12\% for Mu2e, is not incorporated in the tracking algorithm. In this document, we obtain the classical equations of motion for the steady state in the macroscopic limit, introduce a method for the development of approximation schemes relevant to most straw tube trackers, and derive the three dimensional drift paths, thereby deriving correction factors to be applied to the simulation and reconstruction algorithms for Mu2e. 
+%
+%\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\begin{multicols}{2} % Two-column layout throughout the main article text
+
+\section{Average Field}
+
+
+We want the average scalar (vertical component) B field experienced by the muons
+\begin{equation}
+\left\langle B \right\rangle = B(\textbf{x},t) \otimes M(\textbf{x},t)
+\end{equation}
+This involves convolving the spacial and time structure of the muon beam and the B field. The spacial structures can be expanded into moments as $B(\textbf{x},t) = \Sigma_n b_n(t)$ and $M(\textbf{x},t) = \Sigma_n m_n(t)$ where $b_n(t)$  and $m_n(t)$ are the nth field and muon moment. However, since there will be different uncertainty on the measurement of each moment, we may need to take the weighted averages
+\begin{equation}
+B(\textbf{x},t) = \frac{\Sigma_n b_n(t) w^b_n}{W^{I}}
+\end{equation}
+and 
+\begin{equation}
+M(\textbf{x},t) = \frac{\Sigma_n m_n(t) w^m_n}{W^{i}
+\end{equation}
+where we let $W \equiv \Sigma_n w_n$. Note that $w_n$ has no time structure. 
+
+
+The average experienced B field can then be expressed as the sum of products of the moments
+\begin{equation}
+\left\langle B \right\rangle = 
+\Sigma_n (b_{n}(t) \otimes m_{n}(t))
+\end{equation}
+wherein the convolution can be expressed to a weighted average
+\begin{equation}
+\left\langle B \right\rangle = 
+\Sigma_n \frac{ \int b_{n}(t) m_{n}(t) c_n(t) dt}{\int c_n(t) dt}
+\end{equation}
+where $c_n(t)$ is, for now, a general weighting factor that can absorb various effects, such as the changing number of muons, field uncertainties, etc. Identifying $c_n(t)$ exactly is reserved for a later section. 
+
+Provided time is discretized finely enough so that, within any single interval, the spacial structures are effectively constant, we can write
+\begin{equation}
+	\left\langle B \right\rangle = 
+	\Sigma_{n}\frac{\Sigma_{t} b_{nt} m_{nt} c_{nt}}{\Sigma_t c_{nt}}
+\end{equation}
+
+Let $\Sigma_{nt} c_{nt} = \Sigma_{n} C_n $. Then
+\begin{equation}
+\left\langle B \right\rangle \equiv
+\Sigma_n \left\langle B \right\rangle_n = 
+\frac{1}{C_n} [\Sigma_{nt} b_{nt} m_{nt} c_{nt}]
+\end{equation}
+with
+\begin{equation}
+\boxed{
+	\left\langle B \right\rangle_n =
+	\frac{1}{C_n}\Sigma_{t} [b_{nt} m_{nt} c_{nt}] = 
+	\frac{1}{C_n}\Sigma_t [c_{nt} \left\langle B \right\rangle_{nt}]
+}
+\end{equation}
+where we let $	\left\langle B \right\rangle_{n\tau} \equiv b_{n\tau} m_{n\tau}$
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+
+\section{Error on Average  Field}
+Assuming that the muon and field structures ($m_{nt}$ and $b_{nt}$) are uncorrelated, the varience in the nth moment at time $t$, from the variational principle, is
+
+\begin{equation}
+\sigma^2_{nt} \equiv
+(\Delta \left\langle B \right\rangle_{nt})^2 =
+(\frac{d \left\langle B \right\rangle_{nt}}{db_{nt}}\Delta b_{nt})^2 +
+(\frac{d \left\langle B \right\rangle_{nt}}{dm_{nt}}\Delta m_{nt})^2 =
+(m_{nt} \Delta b_{nt})^2 + (b_{nt}\Delta m_{nt})^2 
+\end{equation}
+We can then say that
+
+\begin{equation}
+\left\langle B \right\rangle_{nt} \pm \sigma_{nt} =
+b_{nt} m_{nt} \pm
+\sqrt{(m_{nt} \Delta b_{nt})^2 + (b_{nt}\Delta m_{nt})^2}
+\end{equation}
+
+
+Assume the uncertainty on $c_t$ is zero. We can write 
+\begin{equation}
+\boxed{
+	\left\langle B \right\rangle_{n} \pm \sigma_{n} =
+	\frac{1}{C}\Sigma_t c_t [\left\langle B \right\rangle_{nt} \pm \sigma_{nt}] = 
+	\frac{1}{C}\Sigma_t c_t [b_{nt} m_{nt} \pm \sqrt{(m_{nt} \Delta b_{nt})^2 + (b_{nt}\Delta m_{nt})^2}]
+}
+\end{equation}
+
+
+
+
+\end{multicols}
+
+\end{document}
+
+
+
+
+
+
+%
+%
+%
+%\newpage
+%\section{old stuff}
+%We can put an upper bound on the error associated with the assumption of a constant $r$-component of velocity.  Consider the case of maximal deviation, \emph{i.e.} when the two fields are perpendicular. 
+%The exact d-to-t function for the special case of perpendicular fields is begotten through the limit,
+%\begin{equation}
+%t_{\perp} = \lim_{\cos\phi\to 0} \frac{(\cos^2 \phi - 1) \arctan(d C \cos \phi ) + d C \cos \phi }{v_d C \cos^3 \phi}
+%\end{equation}
+%which converges to,
+%\begin{equation}
+%t_{\perp} = \frac{d}{v_d}( 1 + \frac{C^2 d^2}{3})
+%\end{equation}
+%Meanwhile, the approximate solution, namely that with constant $u_x$, is found directly from Equation~\ref{eq:components},
+%\begin{equation}
+%t^\prime_{\perp} = \frac{d}{u_x} = \frac{d (1 + C^2 d^2)}{v_d}
+%\end{equation}
+%We can quantify the relative effect of integrating the reciprocal of velocity with respect to $r$ by taking the ratio,
+%\begin{equation}
+%\frac{t_\perp}{t^\prime_{\perp}}  = \frac{1 + \frac{C^2 d^2}{3}}{1 + C^2 d^2}
+%\end{equation}
+%which is over a 10\% effect at $\zeta=0.5$, as can be seen from Figure~\ref{fig:ratio}.
+%\begin{figure}[H]
+%\label{fig:ratio}
+%    \includegraphics[width=0.47\textwidth]{pics/ratio}
+%    \caption{Here we have a worst case scenario for  the ratio of computed times vs $\zeta$. In mu2e,  0<$\zeta$<0.5}
+%\end{figure}
+%We we can therefore take the non-integrated d-to-t functions to good approximation. The expression for the d-to-t function is,
+%\begin{equation}
+%t(d,\phi) = \frac{d}{u_x} = \frac{d}{v_d}\bigg(\frac{1 + C^2 d^2}{1 + C^2 d^2 \cos^2 \phi}\bigg)
+%\end{equation}
+%The ratio of time calculated with to without the maximal lorentz effect is,
+%\begin{equation}
+%R_{\text{calc}} = \frac{1 + C^2 d^2}{1 + C^2 d^2 \cos^2 \phi}
+%\end{equation}
+%which is plotted in Figure~\ref{fig:calc} for $\phi = 0$
+%\begin{figure}[H]
+%\label{fig:calc}
+%    \includegraphics[width=0.47\textwidth]{pics/calc}
+%    \caption{The ratio of computed times with and without the Lorentz effect as a function of $\zeta$. In mu2e,  0<$\zeta$<0.5}
+%\end{figure}
+%The true effect should be the same expression obtained from integration. This is plotted in figure Figure~\ref{fig:true} for $\phi = 0$
+%\begin{equation}
+%R_{\text{true}} = 1 + \frac{C^2 d^2 \cos^2 \phi}{3}
+%\end{equation}
+%\begin{figure}[H]
+%\label{fig:true}
+%    \includegraphics[width=0.47\textwidth]{pics/true}
+%    \caption{The ratio of computed times with and without the Lorentz effect as a function of $\zeta$. In mu2e,  0<$\zeta$<0.5}
+%\end{figure}
+%A reasonable middle ground is to compute the d-to-t function without integration, but using the time averaged value of $\zeta$ which is essentially the time averaged value of $r$ over the trajectory,
+%\begin{equation}
+%r_{\text{avg}} = \frac{\int r dt}{\int dt} = \frac{\int \frac{r dr}{u_r}}{\int \frac{dr}{u_r}}
+%\end{equation}
+%which involves the same nasty expressions we set out to avoid. We can approximate $r_{\text{avg}}$ by making the assumption that the velocity decreases linearly with $r$. Under this assumption we get,
+%\begin{equation}
+%r_{\text{avg}}  = \frac{d}{2}
+%\end{equation}
+%Substituting this into ??? we get
+%\begin{equation}
+%\boxed{
+%t(d,\phi) = \frac{d}{v_d}\bigg(\frac{1 + (\frac{C d}{2})^2}{1 + (\frac{C d  \cos \phi}{2})^2}\bigg)
+%}
+%\end{equation}
+%which is plotted in Figure~????. In order to get the t-to-d function we must invert the above expression. We rewrite d-to-t function as, 
+%\begin{equation}
+%t(d_0,\phi) = \frac{d_0}{v_d}f(d_0)
+%\end{equation}
+%We want to find the function $g(t)$ such that,
+%\begin{equation}
+%d(t_0,\phi) = t_0v_d g(t_0)
+%\end{equation}
+%Substituting $t_0  = \frac{d_0}{v_d}$ gives,
+%\begin{equation}
+%d(t_0,\phi) = t_0v_d g(\frac{d_0}{v_d})
+%\end{equation}
+%In Equation ?? and ??, $f$ and $g$ can be thought of as contraction factors on the velocity. 
+%\begin{equation}
+%u_x = \frac{v_d}{f(d_0)} =   v_d g(\frac{d_0}{v_d})
+%\end{equation}
+%hence,
+%\begin{equation}
+%g(\frac{d_0}{v_d}) = f(d_0)
+%\end{equation}
+%With this transformation and the form of $f$, we can immediately write down the t-to-d function,
+%\begin{equation}
+%\boxed{
+%d(t_0,\phi) = t_0 v_d \bigg(\frac{1 + (\frac{C t_0 v_d  \cos \phi}{ 2})^2}{1 + (\frac{C t_0 v_d}{2})^2}\bigg)
+%}
+%\end{equation}
+%which is shown in Figure~\ref{fig:t2d}
+%\begin{figure}[H]
+%\label{fig:t2d}
+%    \includegraphics[width=0.47\textwidth]{pics/t2d}
+%    \caption{max r and zeta}
+%\end{figure}
+%
+%\begin{figure}[H]
+%\label{fig:ratio}
+%    \includegraphics[width=0.47\textwidth]{pics/d2t}
+%    \caption{thing}
+%\end{figure}
+%
+%
+%
+%
+%
+%\newpage
+%\section{Extra Calculations}
+%Using 1mm as a typical hit distance from the wire, we calculate,
+%\begin{equation}
+%\zeta \approx 0.1943 \approx 0.2
+%\end{equation}
+%we then get,
+%\begin{equation}
+%              \tan \Phi \equiv  \frac{u_y}{u_x} = \frac{0.04 \cos \phi \sin \phi}{1 + 0.04 \cos^2 \phi}            
+%\end{equation}
+%which is maximized at $\pi/4$ with a value of about 0.02. This means the drift in the y direction is less than 2\% of the radial motion. Say we have a charge starting at 2.5 mm, by the time it has reached 0.5mm from the wire, it has moved 0.04mm in y, which is only a 4 degree shift in phi.
+%
+%
+%\newpage
+%
+%The exact solution for the change in $\phi$ throughout the particle's trajectory is obtained by solving,
+%\begin{equation}
+%\frac {d\phi}{dx} = \frac{u_y}{x u_x}  = \frac{\zeta^2 \cos \phi \sin \phi}{x(1 + \zeta^2 \cos^2 \phi)}     
+%\end{equation}
+%which is a first-order nonlinear ODE with a nasty solution, call it $\phi(x,\phi_0)$. Throwing out the third order in $x$ term give,
+%\begin{equation}
+%d\phi   = C^2  x \cos \phi \sin \phi dx    
+%\end{equation}
+%or,
+%\begin{equation}
+% \int_{\phi_i}^{\phi_f} \frac{d\phi}{\cos \phi \sin \phi}   =   \int_{d}^{0}C^2  x  dx    
+%\end{equation}
+%or,
+%\begin{equation}
+% \ln(\frac{\tan\phi_f}{\tan\phi_i})  =  \frac{-C^2 x^2}{2}
+%\end{equation}
+%or,
+%\begin{equation}
+% \tan\phi_f  = \tan\phi_i \text{e}^\frac{-C^2 x^2}{2}
+%\end{equation}
+% or,
+%\begin{equation}
+%\Delta \tan\phi =  \tan\phi_f -\tan\phi_i = \tan\phi_i (\text{e}^\frac{-C^2 x^2}{2} - 1)
+%\end{equation} 
+% or,
+%\begin{equation}
+% \phi_f  = \arctan(\tan\phi_i \text{e}^\frac{-C^2 x^2}{2})
+%\end{equation} 
+% or,
+%\begin{equation}
+%\Delta \phi = \phi_f - \phi_i  = \arctan(\tan\phi_i \text{e}^\frac{-C^2 x^2}{2}) - \phi_i
+%\end{equation}  
+%which has a magnitude that is maximized when the exponent is maximized.
+%so,
+%\begin{equation}
+% \frac{\partial \Delta \phi}{\partial \phi_i} = \frac{k \sec^2\phi_i}{k^2 \tan^2\phi + 1} - 1
+%\end{equation}  
+% for some constant $k$
+% man something is fucked up
+% 
+%
+% 
+% 
+% 
+% \newpage
+%
+%OTHER THINGS
+%
+%
+%\begin{equation}
+%t = \int_{a}^{d} \frac{dr}{u_r} 
+%\end{equation}
+%\begin{equation}
+%u_r = \sqrt{u^2_x + u^2_y} = \eta \sqrt{1 + 2\zeta^2 \cos^2 \phi + \zeta^4 \cos^2 \phi}
+%\end{equation}
+%\begin{equation}
+%t = \int_{a}^{d} \frac{dr}{\eta \sqrt{1 + 2\zeta^2 \cos^2 \phi + \zeta^4 \cos^2 \phi}} 
+%\end{equation}
+%\begin{equation}
+% \eta \equiv  \mu |\vec{E}|/(1 + \zeta^2)
+%\end{equation}
+%\begin{equation}
+%t = \frac{1}{v_d} \int_{a}^{d} \frac{(1 + \zeta^2) dr}{ \sqrt{1 + 2\zeta^2 \cos^2 \phi + \zeta^4 \cos^2 \phi}} 
+%\end{equation}
+%A very bad integral, but the particle WONT spiral! assuming the steady state, it will get locked after a quarter of a turn!!!!
+%
+%
+%
+%
+%
+%The d-to-t function is is then obtained by substituting the form of $\phi(x,\phi_0)$ into the integral,
+%\begin{equation}
+%t = \int_{a}^{d} \frac{ dx (1 + \zeta^2)}{\mu |\vec{E}| (1 + \zeta^2 \cos^2 \phi(x,\phi_0))} 
+%\end{equation}
+%
+%
+%
+%
+%
+%
+%\newpage
+%\section{The Great Failure}
+%Taking only the first two terms in the taylor expansion of $\arctan(d C \cos \phi )$ about $d=0$, we obtain,
+%\begin{equation}
+%t \approx \frac{d}{v_d}(\frac{1}{\cos\phi} + \frac{d^2 C^2}{3}(1 - \cos \phi))
+%\end{equation}
+%For now, we will approximate even further to obtain the simple expression
+%\begin{equation}
+%t \approx \frac{d}{v_d \cos\phi}
+%\end{equation}
+%which is easily invertible,
+%\begin{equation}
+%d \approx t v_d \cos\phi
+%\end{equation}
+%and  we want to find the function $g(t)$ such that,
+%
+%\
+%
+%\newpage
+%\section{More old}
+% naively, we would choose the velocity $\vec{u}(d)$, yielding
+%\begin{equation}
+%t(d,\phi) = \frac{d}{u_x (d,\phi)} = \frac{d}{v_d}\bigg(\frac{1 + C^2 d^2}{1 + C^2 d^2 \cos^2 \phi}\bigg)
+%\end{equation}
+%which we call the \emph{first approximation}. 
+%A better approximation can be made by assuming that the velocity decreases linearly with $r$. Under this assumption we get,
+%\begin{equation}
+%r_{\text{avg}}  = \frac{d}{2}
+%\end{equation}
+%which gives,
+%\begin{equation}
+%t(d,\phi) = \frac{d}{v_d}\bigg(\frac{1 + (\frac{C d}{2})^2}{1 + (\frac{C d  \cos \phi}{2})^2}\bigg)
+%\end{equation}
+%We call this the \emph{second approximation}. 
+%
+%
+%
+%
+
+
+
+
