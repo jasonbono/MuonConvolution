@@ -1,88 +1,79 @@
-# Project Title
+# The Convolution Approach
 
-One Paragraph of project description goes here
 
-## Getting Started
+## Average field
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+We want the average scalar (vertical) B field experienced by the muons
 
-### Prerequisites
+\begin{equation}
+\left\langle B \right\rangle = B(\textbf{x},t) \otimes M(\textbf{x},t)
+\end{equation}
 
-What things you need to install the software and how to install them
+This invloves convolving the spacial and time structure of the muon beam and the B field. The spacial structures can be expanded into moments
 
-```
-Give examples
-```
+\begin{equation}
+B(\textbf{x},t) = \Sigma_i b_i(t)
+\end{equation}
 
-### Installing
+and 
 
-A step by step series of examples that tell you how to get a development env running
+\begin{equation}
+M(\textbf{x},t) = \Sigma_i m_i(t)
+\end{equation}
 
-Say what the step will be
 
-```
-Give the example
-```
+The average expierienced B field can then be expressed as the sum of products of the moments
 
-And repeat
+\begin{equation}
+\left\langle B \right\rangle = 
+\Sigma_i b_{i}(t) \otimes m_{i}(t)
+\end{equation}
 
-```
-until finished
-```
 
-End with an example of getting some data out of the system or using it for a little demo
+wherein the convolution reduces to the weighted average
 
-## Running the tests
+\begin{equation}
+\left\langle B \right\rangle = 
+ \frac{\Sigma_i \int b_{i}(t) m_{i}(t) c(t) dt}{\int c(t) dt}
+\end{equation}
 
-Explain how to run the automated tests for this system
+where $c(t)$, which is the number of muons present at time $t$, can be interpreted as the weighting factor for the average product between $b_{i}(t)$ and $m_{i}(t)$. Provided the time variable is discreetized finely enough so that, within the intervals, the spacial structure is effectivly constant, we can write
 
-### Break down into end to end tests
+\begin{equation}
+\boxed{
+\left\langle B \right\rangle = 
+\frac{\Sigma_{it} b_{it} m_{it} c_{t}}{\Sigma_t c_t} \equiv
+\Sigma_i \left\langle B \right\rangle_i
+}
+\end{equation}
 
-Explain what these tests test and why
+where, for later convience, we have defined the ith moment's contribution to $\left\langle B \right\rangle$ as $\left\langle B \right\rangle_i$ so that we can write
 
-```
-Give an example
-```
+\begin{equation}
+\boxed{
+\left\langle B \right\rangle_n =
+\frac{\Sigma_{t} b_{nt} m_{nt} c_{t}}{\Sigma_t c_t}
+}
+\end{equation}
 
-### And coding style tests
+for that of the nth moment. For further simplification, we can write $\left\langle B \right\rangle_n$ at time $\tau$ as 
 
-Explain what these tests test and why
+\begin{equation}
+\boxed{
+\left\langle B \right\rangle_{n\tau} =
+ b_{n\tau} m_{n\tau}
+}
+\end{equation}
 
-```
-Give an example
-```
+so that 
 
-## Deployment
+\begin{equation}
+\boxed{
+\left\langle B \right\rangle_{n} = 
+\frac{\Sigma_t c_t \left\langle B \right\rangle_{nt}}{\Sigma_t c_t} =
+\frac{1}{C}\Sigma_t c_t \left\langle B \right\rangle_{nt}
+}
+\end{equation}
 
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+where we call $\Sigma_t c_t = C$.
 
