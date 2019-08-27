@@ -150,7 +150,7 @@ Provided time is discretized finely enough so that, within any single interval, 
 	\Sigma_{n} w_n \frac{\Sigma_{t} b_{nt} m_{nt} c_{nt}}{\Sigma_t c_{nt}}
 \end{equation}
 
-Letting $\Sigma_{nt} c_{nt} = \Sigma_{n} C_n $ gives
+Letting $\Sigma_{t} c_{nt} = C_n $ gives
 \begin{equation}
 \boxed{
 \left\langle B \right\rangle =
@@ -179,7 +179,7 @@ and that contribution in a single time-slice at $\tau$ as
 %%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Error on Average Field}
-Assuming that the muon and field structures ($m_{nt}$ and $b_{nt}$) are uncorrelated. The variance in the nth moment at time $t$, $\sigma^2_{nt} \equiv (\Delta \left\langle B \right\rangle_{nt})^2$, is 
+Assume that the muon and field structures ($m_{nt}$ and $b_{nt}$) are uncorrelated, and that the uncertainties on $C_n$ and $w_n$ are zero. The variance in the nth moment at time $t$, $\sigma^2_{nt} \equiv (\Delta \left\langle B \right\rangle_{nt})^2$, is 
 
 \begin{equation}
 \sigma^2_{nt} =
@@ -220,6 +220,35 @@ gives
 
 
 
+%\subsection{A Note on the Error Calculation}
+%
+%If $\Delta C_n$ is non-zero, we get the additional term in the error calculation
+%
+%\begin{equation}
+%\zeta^2_{nt} =
+%(\frac{d \left\langle B \right\rangle_{nt}}{dC_{n}}\Delta C_{n})^2
+%\end{equation}
+%or 
+%\begin{equation}
+%\zeta^2_{nt} =
+%(\frac{-w_n b_{nt} m_{nt} c_{nt} \Delta C_n }{C^2_n})^2
+%\end{equation}
+%which gives
+%\begin{equation}
+%\zeta^2_{n} =
+%\Sigma_t(\frac{-w_n b_{nt} m_{nt} c_{nt} \Delta C_n }{C^2_n})^2 = 
+%\frac{w^2_n \Delta C^2_n}{C^4_n} \Sigma_t(b_{nt} m_{nt} c_{nt})^2
+%\end{equation}
+%which gives
+%\begin{equation}
+%\zeta^2 =
+%\Sigma_n \frac{w^2_n \Delta C^2_n}{C^4_n} \Sigma_t(b_{nt} m_{nt} c_{nt})^2
+%\end{equation}
+%but if $C_n = C$ and $\Delta C_n = C$, and $c_{nt} = c_t$ we get
+%\begin{equation}
+%\zeta^2 =
+%\frac{\Delta C^2}{C^4} \Sigma_n w^2_n \Sigma_t(b_{nt} m_{nt} c_{t})^2
+%\end{equation}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -365,8 +394,59 @@ and so the error is
 Note that, in general, the values $w_{1,2,3}$ could have been made unequal in in order to weight the contributions from some moments over others, possibly based on sources of uncertainty. Similarly, identifying $c_{nt}$ with ctags alone allowed for its contraction into $c_t$. This may not always be the case. For example, we may allow the $c_{nt}$ weighting factor to incorporate uncertainty from the field determination, which may have distinct effects on the various moments.
 
 
+
+
 \newpage
-\subsection{Further Questions }
+\subsection{Sanity Checks }
+\subsubsection{Invariance  to Total CTAGs}
+The quantity $c_{nt}$ will always incorporate the number of muons (though CTAGS), even if it incorporates other factors simultaneously. Intuitively, the average field experience by the muons should be invariant to the total number of muons. We can represent an error factor and offset, $f$, in our ability to count muons. We can then represent this as
+\begin{equation}
+c_{nt} \to fc_{nt}
+\end{equation}
+which implies 
+\begin{equation}
+C_{n} \to fC_{n}
+\end{equation}
+which implies
+\begin{equation}
+	\left\langle B \right\rangle =
+	\Sigma_{n}[ \frac{w_n}{C_n} (\Sigma_{t} b_{nt} m_{nt} c_{nt})] \to
+	\Sigma_{n}[ \frac{w_n}{f C_n} (\Sigma_{t} b_{nt} m_{nt} f c_{nt})] = 
+	\left\langle B \right\rangle
+\end{equation}
+ie the calculated field is unchanged.
+
+
+Furthermore, for the uncertainty, we get $\Delta c_{nt} \to f\Delta c{nt}$, which implies
+\begin{equation}
+\begin{split}
+	\sigma^2 = \Sigma_n [\frac{w^2_n}{C^2_n} \Sigma_t  [(m_{nt} c_{nt} \Delta b_{nt})^2 + (b_{nt} c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} \Delta c_{nt})^2 ]] \to \\ 
+	\Sigma_n [\frac{w^2_n}{f^2 C^2_n} \Sigma_t  [(m_{nt} f c_{nt} \Delta b_{nt})^2 + (b_{nt} f c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} f \Delta c_{nt})^2 ]] = 
+	\sigma^2 
+\end{split}
+\end{equation}
+ie the calculated uncertainty in the field is unchanged.
+
+
+\subsubsection{Invariance to Sample Rate}
+Analytically, our calculations should also not be affected by the sample rate, provided it is fine enough. Note that $b_{nt}$ always represents the time averaged magnetic field in time-slice $t$, so its value does not change when re sampled. $m_{nt}$ always represents a geometric representation of the beam, and its value also does not change when re-sampled. $c_{nt}$ on the other hand always incorporates the (sometimes fractional) number of muons in time-slice $t$. It is therefore a linearly cumulative variable (its value changes proportionally to the sample rate). $c_{nt}$ may also incorporate other variables such as the error in $b_{nt}$ and $m_{nt}$, but these are not cumulative. Provided these statements hold true, the product $b_{nt} m_{nt}  c_{nt}$ is linearly cumulative variable in $t$. Therefore
+\begin{equation}
+	\left\langle B \right\rangle_{nt} =
+	\frac{w_n b_{nt} m_{nt} c_{nt}}{C_n}
+\end{equation}
+is also a linearly cumulative variable and thus is invariant to sampling rate, provided the sampling is done over a fixed time interval.
+
+By similar reasoning, $\Delta b_{nt}$ and $\Delta m_{nt}$ are non-cumulative variables, so if $\Delta c_{nt}$ is linearly cumulative, zero, or negligible, then
+\begin{equation}
+	\sigma_{nt} =
+	\frac{w_n}{C_n}\sqrt{[(m_{nt} c_{nt} \Delta b_{nt})^2 + (b_{nt} c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} \Delta c_{nt})^2 ]}
+\end{equation}
+is also linearly cumulative and therefore invariant. In most cases, though perhaps not all, the restriction on $\Delta c_{nt}$ will hold.
+
+
+
+\newpage
+\subsection{ Questions }
 Below are some questions that need to be answered:
 
 \begin{itemize}
@@ -378,7 +458,9 @@ Below are some questions that need to be answered:
 	\item Should anything other than ctags be put into $c_{tn}$? Eg the field uncertainty?
 	\item Does the accumulation of error over time, as it's formulated make sense?
 		\begin{itemize}
-		\item Does our error calculation have built-in invariance to sample-rate?
+		\item Does our error calculation have built-in invariance to sample-rate? (see sanity checks)
+		\item Does our field and error calculation have built-in invariance to total CTAGs? (see sanity checks)
+		
 	\end{itemize}
 	\item How should we use the muon distribution to get the higher order moments (ie above quadrupole)
 	
