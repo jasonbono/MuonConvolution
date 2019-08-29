@@ -94,10 +94,10 @@
 %----------------------------------------------------------------------------------------
 
 
-\section{Framework}
+\section{Frameworks}
 \begin{multicols}{2} % Two-column layout throughout the main article text
-\subsection{Average Field}
-
+\subsection{Moments Method}
+\subsubsection{Average Field}
 
 We want the average scalar (vertical component) B field experienced by the muons
 \begin{equation}
@@ -177,8 +177,7 @@ and that contribution in a single time-slice at $\tau$ as
 \newpage
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Error on Average Field}
+\subsubsection{Error in Average Field}
 Assume that the muon and field structures ($m_{nt}$ and $b_{nt}$) are uncorrelated, and that the uncertainties on $C_n$ and $w_n$ are zero. The variance in the nth moment at time $t$, $\sigma^2_{nt} \equiv (\Delta \left\langle B \right\rangle_{nt})^2$, is 
 
 \begin{equation}
@@ -220,35 +219,117 @@ gives
 
 
 
-%\subsection{A Note on the Error Calculation}
-%
-%If $\Delta C_n$ is non-zero, we get the additional term in the error calculation
-%
-%\begin{equation}
-%\zeta^2_{nt} =
-%(\frac{d \left\langle B \right\rangle_{nt}}{dC_{n}}\Delta C_{n})^2
-%\end{equation}
-%or 
-%\begin{equation}
-%\zeta^2_{nt} =
-%(\frac{-w_n b_{nt} m_{nt} c_{nt} \Delta C_n }{C^2_n})^2
-%\end{equation}
-%which gives
-%\begin{equation}
-%\zeta^2_{n} =
-%\Sigma_t(\frac{-w_n b_{nt} m_{nt} c_{nt} \Delta C_n }{C^2_n})^2 = 
-%\frac{w^2_n \Delta C^2_n}{C^4_n} \Sigma_t(b_{nt} m_{nt} c_{nt})^2
-%\end{equation}
-%which gives
-%\begin{equation}
-%\zeta^2 =
-%\Sigma_n \frac{w^2_n \Delta C^2_n}{C^4_n} \Sigma_t(b_{nt} m_{nt} c_{nt})^2
-%\end{equation}
-%but if $C_n = C$ and $\Delta C_n = C$, and $c_{nt} = c_t$ we get
-%\begin{equation}
-%\zeta^2 =
-%\frac{\Delta C^2}{C^4} \Sigma_n w^2_n \Sigma_t(b_{nt} m_{nt} c_{t})^2
-%\end{equation}
+\subsection{The Matrix Method}
+\subsubsection{Matrix Average Field}
+As an alternative method, one can write 
+\begin{equation}
+M(\textbf{x},t) = \frac{P(\textbf{x},t)n(t)}{\int n(t) dt} 
+\end{equation}
+where $P$ is a 2d projected ($\textbf{x}=r,y$) normalized muon distribution, and n(t) represents the number of muons in that projection at time $t$. Calling $N$ the integral over $n(t)$,  Equation 1 becomes
+\begin{equation}
+\left\langle B \right\rangle = \frac{B(\textbf{x},t) \otimes P(\textbf{x},t)n(t)}{N}
+\end{equation}
+Which can also be expressed as 
+\begin{equation}
+\left\langle B \right\rangle = \frac{\int \int \int  B(r,y,t) P(r,y,t)n(t)dtdrdy  }  {N}
+\end{equation}
+Discretizing $r$,$y$, and $t$ into $R$,$Y$, and $T$ segments gives
+\begin{equation}
+\label{dis}
+\boxed{
+\left\langle B \right\rangle = \frac{\Sigma_t \Sigma_r \Sigma_y    B_{ryt} P_{ryt}n_t }  {N}
+}
+\end{equation}
+
+\paragraph{Interpretation:}
+Equation \ref{dis}  is all that's needed, but for interpretation, we can view $B_{ryt} P_{ryt}$ as the {r,y,t} element of Hadamard product of the two matrices $B$ and $P$, which have $R$ rows, $Y$ columns, and $T$ layers. Let $H$ be that $R \times Y \times T$  Hadamard product
+\begin{equation}
+H = B \odot P
+\end{equation}
+then
+\begin{equation}
+\left\langle B \right\rangle = \frac{  \Sigma_r \Sigma_y \Sigma_t  n_t  H_{ryt} }  {N}
+\end{equation}
+where $\Sigma_t  n_t  H_{ryt}/N$ can been seen as the $n$ weighted average of all layers of $H$. Call that weighted average $\bar{H} $,
+\begin{equation}
+\bar{H}_{ry} \equiv \frac{ \Sigma_t  n_t  H_{ryt} }  {N}
+\end{equation}
+So we finally have that the convoluted B field is just the sum of elements of $\bar{H}$, or
+\begin{equation}
+\boxed{
+\left\langle B \right\rangle =  \Sigma_r \Sigma_y \bar{H}_{ry}
+}
+\end{equation}
+
+\paragraph{Special Case:}
+Note that, in the special case where $P_{ryt}$ has no time dependence, then we can rewrite Equation \ref{dis} as 
+\begin{equation}
+\left\langle B \right\rangle =  \Sigma_r \Sigma_y P_{ry} \frac{\Sigma_t B_{ryt} n_t }  {N}
+\end{equation}
+where the fraction can be thought of as the $n$ weighted average of the B field. Explicitly  letting
+\begin{equation}
+\hat{B} \equiv \frac{\Sigma_t B_{ryt} n_t }  {N}
+\end{equation}
+gives
+\begin{equation}
+\boxed{
+\left\langle B \right\rangle =  \Sigma_r \Sigma_y P_{ry} \hat{B}_{ry}
+}
+\end{equation}
+ie the sum of all elements of the Hadamard product between the normalized muon distribution and the $n$ weighted average B field.
+
+
+\subsubsection{Matrix Average Field Error}
+Assuming independence, the total variance in Equation \label{dis} can be written as
+\begin{equation}
+	\sigma^2 = 
+	\Sigma_r \Sigma_y \Sigma_t \sigma^2_{ryt}
+\end{equation}
+where 
+\begin{equation}
+ \sigma^2_{ryt} = \frac{1}{N^2} [( P_{ryt} n_t \Delta B_{ryt})^2  + (B_{ryt} n_t\Delta P_{ryt})^2 + (B_{ryt} P_{ryt}\Delta n_{t})^2]
+\end{equation}
+or 
+\begin{equation}
+\boxed{
+\sigma^2 = 
+\frac{1}{N^2} \Sigma_r \Sigma_y \Sigma_t  [( P_{ryt} n_t \Delta B_{ryt})^2  + (B_{ryt} n_t\Delta P_{ryt})^2 + (B_{ryt} P_{ryt}\Delta n_{t})^2]
+}
+\end{equation}
+
+Once again, the uncertainty on N is zero by definition since it's a normalization factor for the sum over $n$. $\Delta B_{ryt}$ comes from uncertainty in the field determination. $\Delta P_{ryt}$ comes from uncertainty in the tracker-determined beam distribution.  $\Delta n_{t}$ comes from uncertainty in the CTAGs in each time slice. Note that uncertainties arising from spacial discretization are correlated from cell to cell and would therefore need to be treated in detail. However, this can be circumvented by fine-graining. 
+
+
+
+\paragraph{A Special Case:}
+In the case where the uncertainty on $n$ and $P$ are zero, and that $P$ has no time dependence, we get
+\begin{equation}
+	\sigma^2 = 
+	\Sigma_r \Sigma_y P^2_{ry} \frac{\Sigma_t  ( n^2_t \Delta B^2_{ryt})}{{N^2} }
+\end{equation}
+where the faction is the $n^2$ weighted mean of $\Delta B^2$
+
+\subsubsection{Matrix Method in Practice}
+Information on $P$ is provided by the tracker team as a weighted 2d histogram encoded into a text file. So we effectively get $P_{ryt} = P_{ry}$ directly. The tracker team has not assigned explicit bin-by-bin uncertainty so it's taken to be zero. The uncertainty in the muon distribution is implicit in its diffusion.
+
+Information on $n_t$ is provided by the gm2\_online\_prod database. We assume that the uncertainty associated with $n_t$ is small enough to ignore. Any scale uncertainty cancels, and any uncertainty caused by discretization of time is highly correlated and would have a small overall effect.
+
+Information on $B_{ryt}$ and $\Delta B_{ryt}$ are provided by the field team, and encoded as multipole strengths and uncertainties in distinct time layers.  We can use an analytical function to map the multipoles onto the {r,y} space in each time layer. We can map the uncertainties in the multipoles in the same way. We can then map the two space-continuous variables onto a grid giving$B_{ryt}$ and  $\Delta B_{ryt}$. 
+
+The formula to convert the multipole strengths, $b_i$ to $B(r,\theta)$ is
+
+  double r = sqrt(x*x+y*y);
+double rf = r/4.5;//4.5 cm aperture
+
+\begin{equation}
+B(r,y) =  n_1 +  \sum_{n=1} R^{n} (b_{2n} \cos(\theta n )  + b_{2n+1} \sin(\theta n )   )
+\end{equation}
+with 
+\begin{equation}
+R = \frac{\sqrt{x^2 + y^2}}{4.5}
+\end{equation}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
