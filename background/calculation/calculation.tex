@@ -314,21 +314,25 @@ Information on $P$ is provided by the tracker team as a weighted 2d histogram en
 
 Information on $n_t$ is provided by the gm2\_online\_prod database. We assume that the uncertainty associated with $n_t$ is small enough to ignore. Any scale uncertainty cancels, and any uncertainty caused by discretization of time is highly correlated and would have a small overall effect.
 
-Information on $B_{ryt}$ and $\Delta B_{ryt}$ are provided by the field team, and encoded as multipole strengths and uncertainties in distinct time layers.  We can use an analytical function to map the multipoles onto the {r,y} space in each time layer. We can map the uncertainties in the multipoles in the same way. We can then map the two space-continuous variables onto a grid giving$B_{ryt}$ and  $\Delta B_{ryt}$. 
+Information on $B_{ryt}$ and $\Delta B_{ryt}$ are provided by the field team, and encoded as multipole strengths and uncertainties in distinct time layers.  We can use an analytical function to map the multipoles onto the {r,y} space in each time layer. We can map the uncertainties in the multipoles in the same way. We can further map the two space-continuous variables onto a grid giving$B_{ryt}$ and  $\Delta B_{ryt}$. 
 
-The formula to convert the multipole strengths, $b_i$ to $B(r,\theta)$ is
-
-  double r = sqrt(x*x+y*y);
-double rf = r/4.5;//4.5 cm aperture
+The formula to convert the multipole moments, $b_i$, to the magnetic field, $B(r,\theta)$, is taken as definition since it is what has been used by the field team to describe the field.
 
 \begin{equation}
-B(r,y) =  n_1 +  \sum_{n=1} R^{n} (b_{2n} \cos(\theta n )  + b_{2n+1} \sin(\theta n )   )
+B(r,\theta) =  b_1 +  \sum_{n=1} R^{n} (b_{2n} \cos(n \theta)  + b_{2n+1} \sin(n \theta )   )
 \end{equation}
-with 
+where $b_n$ has units of ppm. Also, note that $R$ is dimensionless, with 
 \begin{equation}
-R = \frac{\sqrt{x^2 + y^2}}{4.5}
+R = \frac{r}{4.5 \text{ cm}}  = \frac{\sqrt{x^2 + y^2}}{4.5 \text{ cm}} 
 \end{equation}
-
+Where $r$,$x$, and$y$ are in cm. Subbing in 
+\begin{equation}
+\theta = \arctan \frac{y}{x}
+\end{equation}
+gives
+\begin{equation}
+B(x,y)  =  b_1 +  \sum_{n=1} (\frac{\sqrt{x^2 + y^2}}{4.5})^{n} (b_{2n} \cos(n \arctan \frac{y}{x})  + b_{2n+1} \sin(n  \arctan \frac{y}{x} )   )
+\end{equation}
 
 
 
