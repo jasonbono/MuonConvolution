@@ -1,11 +1,11 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 
 
-
-def get_df_tracker(file = "sample_data/beamSpot.txt"):
+def get_df_tracker(file = "/Users/bono/Desktop/gm2FieldAnalysis/MuonConvolution/tracker_info/sample_data/beamSpot.txt"):
     names=['radial', 'vertical', 'counts']
     df = pd.read_csv(file, sep=" ",names=names)
     df.index.name = 'index'
@@ -57,3 +57,16 @@ def get_2dhist_tracker(df,bins=100):
     w = df["counts"]
     H, xedges, yedges = np.histogram2d(x, y, weights=w, bins=bins)
     return H.T,xedges,yedges
+
+
+
+
+def plot_beam(df,bins=119):
+    fig = plt.figure(figsize=(10, 8))
+    plt.hist2d(df['radial'], df['vertical'], weights=df['counts'], bins=bins,cmap='inferno')
+    plt.xlabel('x (mm)')
+    plt.ylabel('y (mm)')
+    cbar = plt.colorbar()
+    cbar.ax.set_ylabel('Counts')
+    plt.close()
+    return fig
