@@ -80,8 +80,13 @@ def shift_beam(df_input,xshift,yshift):
         #once again, reverse positive and negative
         df['vertical'] = -df['vertical']
     
+    
+    
+    #in keeping with the convention, sort by x, then by y
+    #Need to drop the index because operations over rows are done via the index
+    df = df.sort_values(['radial','vertical']).reset_index(drop=True)
+    
     return df
-
 
 
 
@@ -93,7 +98,7 @@ def add_baseline_noise(df_input,noise_level):
     #copy the dataframe
     df = df_input.copy()
     
-    #get the total number of counts 
+    #get the total number of counts
     df['counts'].sum()
     
     return df
