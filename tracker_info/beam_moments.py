@@ -61,12 +61,16 @@ def get_2dhist_tracker(df,bins=100):
 
 
 
-def plot_beam(df,bins=119):
+def plot_beam(df,bins=60):
     fig = plt.figure(figsize=(10, 8))
     plt.hist2d(df['radial'], df['vertical'], weights=df['counts'], bins=bins,cmap='inferno')
-    plt.xlabel('x (mm)')
-    plt.ylabel('y (mm)')
+    plt.xlabel('radial (mm)')
+    plt.ylabel('vertical (mm)')
+    plt.xlim((-59, 59))
+    plt.ylim((-59, 59))
+    
     cbar = plt.colorbar()
     cbar.ax.set_ylabel('Counts')
     plt.close()
+    
     return fig
