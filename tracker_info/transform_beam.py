@@ -93,12 +93,26 @@ def shift_beam(df_input,xshift,yshift):
 
 def add_baseline_noise(df_input,noise_level):
 
-    
-    
     #copy the dataframe
     df = df_input.copy()
     
-    #get the total number of counts
-    df['counts'].sum()
+    #convert the rel noise level to an abs one
+    noise_level = int(noise_level*(df['counts'].mean()))
+    
+    #add random noise to the counts
+    df['counts'] = np.random.randint(noise_level, noise_level+1, df.shape[0]) + df['counts']
+    
+    #set any negative numbers to zero
+    df['counts'][df['counts'] < 0] = 0
     
     return df
+
+
+
+def gaus_broadening(df_input,xwidth,ywidth):
+
+    edge = 59
+    inc = 2
+    gx = np.arange(-3*sigma, 3*sigma, inc)
+    gaussian = np.exp(-(x/sigma)**2/2)
+    result = np.convolve(original_curve, gaussian, mode="full")
