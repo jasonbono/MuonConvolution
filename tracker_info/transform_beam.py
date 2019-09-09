@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-
+from scipy import ndimage as ndi
+#from PIL import Image, ImageFilter
 
 def shift_beam(df_input,xshift,yshift):
     '''
@@ -116,3 +117,50 @@ def gaus_broadening(df_input,xwidth,ywidth):
     gx = np.arange(-3*sigma, 3*sigma, inc)
     gaussian = np.exp(-(x/sigma)**2/2)
     result = np.convolve(original_curve, gaussian, mode="full")
+
+
+
+def gaussian_kernel(edge,sigma):
+    """Make a 2d gaussian kernel of the specified size (2*edge)
+        and sigma.
+        
+        Both parameters are in mm
+        
+        The edge should be several times greater than sigma.
+        """
+    
+    #1d positions in 2 mm steps
+    pos = np.arange(-edge,edge + 1,2)
+    
+    #Make a 1d gaussian kernal
+    gaus = np.exp(-(pos**2)/(2*sigma**2))
+    #normalize to 1
+    gaus /= np.sum(gaus)
+    
+    #Make the 1d kernel 2d
+    kernel = gaus[:, np.newaxis] * gaus[np.newaxis, :]
+    
+    return kernel
+
+
+
+
+def convolve_df(df,edge,sigma):
+    """convolve the dataframe using a gaussian kernel
+        
+        for now, assumes the dataframe has 60*60 columns
+        
+        """
+    
+    #get a 1d array of the 'counts'
+    a = df['counts'].to_numpy()
+    #convert to a 2d array
+    a = np.reshape(a, (60, 60))
+    # get the kernel
+    kernel = gaussian_kernel(edge,sigma)
+    # do the 2d convolution
+    c = ndi.convolve(a,kernel)
+    #roll the 2d array back into a 1d array
+    c = np.reshape(c, (60*60, -1))
+    
+    return c
