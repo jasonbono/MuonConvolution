@@ -59,7 +59,7 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Current Approach to Muon Convolution}} % Article title
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{An Approach to Muon Convolution}} % Article title
 
 \author{
 \large
@@ -94,7 +94,7 @@
 %----------------------------------------------------------------------------------------
 
 
-\section{Frameworks}
+\section{Framework}
 \begin{multicols}{2} % Two-column layout throughout the main article text
 \subsection{Moments Method}
 \subsubsection{Average Field}
@@ -142,14 +142,11 @@ where $c_n(t)$ is, for now, a general weighting factor that can absorb various e
 \left\langle B \right\rangle =
  \Sigma_n w_n \frac{ \int b_{n}(t) m_{n}(t) c_n(t) dt}{\int c_n(t) dt}
 \end{equation}
-
-
 Provided time is discretized finely enough so that, within any single interval, the spacial structures are effectively constant, we can write
 \begin{equation}
 	\left\langle B \right\rangle = 
 	\Sigma_{n} w_n \frac{\Sigma_{t} b_{nt} m_{nt} c_{nt}}{\Sigma_t c_{nt}}
 \end{equation}
-
 Letting $\Sigma_{t} c_{nt} = C_n $ gives
 \begin{equation}
 \boxed{
@@ -179,14 +176,12 @@ and that contribution in a single time-slice at $\tau$ as
 %%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Error in Average Field}
 Assume that the muon and field structures ($m_{nt}$ and $b_{nt}$) are uncorrelated, and that the uncertainties on $C_n$ and $w_n$ are zero. The variance in the nth moment at time $t$, $\sigma^2_{nt} \equiv (\Delta \left\langle B \right\rangle_{nt})^2$, is 
-
 \begin{equation}
 \sigma^2_{nt} =
 (\frac{d \left\langle B \right\rangle_{nt}}{db_{nt}}\Delta b_{nt})^2 +
 (\frac{d \left\langle B \right\rangle_{nt}}{dm_{nt}}\Delta m_{nt})^2 + 
 (\frac{d \left\langle B \right\rangle_{nt}}{dc_{nt}}\Delta c_{nt})^2 
 \end{equation}
-
 or 
 \begin{equation}
 \boxed{
@@ -194,8 +189,7 @@ or
 \frac{w^2_n}{C^2_n}[(m_{nt} c_{nt} \Delta b_{nt})^2 + (b_{nt} c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} \Delta c_{nt})^2 ]
 }
 \end{equation}
-
-substituting the above expression into
+Substituting the above expression into
 \begin{equation}
 \sigma^2_{n} = \Sigma_t  \sigma^2_{nt} 
 \end{equation}
@@ -215,6 +209,9 @@ gives
 	\sigma^2 = \Sigma_n [\frac{w^2_n}{C^2_n} \Sigma_t  [(m_{nt} c_{nt} \Delta b_{nt})^2 + (b_{nt} c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} \Delta c_{nt})^2 ]]
 }
 \end{equation}
+
+
+\subsubsection{Moments Method in Practice}
 
 
 

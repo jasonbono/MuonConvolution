@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 from scipy import ndimage as ndi
+from scipy import signal
+
 #from PIL import Image, ImageFilter
 
 def shift_beam(df_input,xshift,yshift):
@@ -145,7 +147,7 @@ def gaussian_kernel(edge,sigma):
 
 
 
-def convolve_df(df,edge,sigma):
+def convolve_df(df,edge,sigma,deconvolve=False):
     """convolve the dataframe using a gaussian kernel
         
         for now, assumes the dataframe has 60*60 columns
@@ -160,7 +162,16 @@ def convolve_df(df,edge,sigma):
     kernel = gaussian_kernel(edge,sigma)
     # do the 2d convolution
     c = ndi.convolve(a,kernel)
-    #roll the 2d array back into a 1d array
+    #roll back to 2d array
     c = np.reshape(c, (60*60, -1))
-    
+
     return c
+
+
+def narrow(df,power,var,new_var):
+
+    original_sum = df[var].sum()
+    df[new_var] = df[var]**power
+    new_sum = df[new_var].sum()
+    df[new_var] = (df[new_var]*original_sum/new_sum).astype(int)
+    return df
