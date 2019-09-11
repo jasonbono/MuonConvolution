@@ -131,16 +131,20 @@ def gaussian_kernel(edge,sigma):
         The edge should be several times greater than sigma.
         """
     
+    edge = np.float128(edge)
+    sigma = np.float128(sigma)
+    
     #1d positions in 2 mm steps
     pos = np.arange(-edge,edge + 1,2)
     
     #Make a 1d gaussian kernal
-    gaus = np.exp(-(pos**2)/(2*sigma**2))
+    gaus = np.exp(-(pos**2.0)/(2.0*sigma**2.0))
     #normalize to 1
     gaus /= np.sum(gaus)
-    
+
     #Make the 1d kernel 2d
     kernel = gaus[:, np.newaxis] * gaus[np.newaxis, :]
+    kernel = np.float64(kernel)
     
     return kernel
 
