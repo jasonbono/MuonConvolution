@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
 from scipy import ndimage as ndi
-<<<<<<< HEAD
-=======
 from scipy import signal
 
->>>>>>> temp
 #from PIL import Image, ImageFilter
 
 def shift_beam(df_input,xshift,yshift):
@@ -150,11 +147,9 @@ def gaussian_kernel(edge,sigma):
 
 
 
-<<<<<<< HEAD
-def convolve_df(df,edge,sigma):
-=======
-def convolve_df(df,edge,sigma,deconvolve=False):
->>>>>>> temp
+
+def convolve_df(df,edge,sigma,var='counts'):
+
     """convolve the dataframe using a gaussian kernel
         
         for now, assumes the dataframe has 60*60 columns
@@ -162,23 +157,19 @@ def convolve_df(df,edge,sigma,deconvolve=False):
         """
     
     #get a 1d array of the 'counts'
-    a = df['counts'].to_numpy()
+    a = df[var].to_numpy()
     #convert to a 2d array
     a = np.reshape(a, (60, 60))
     # get the kernel
     kernel = gaussian_kernel(edge,sigma)
     # do the 2d convolution
     c = ndi.convolve(a,kernel)
-<<<<<<< HEAD
+
     #roll the 2d array back into a 1d array
     c = np.reshape(c, (60*60, -1))
     
     return c
-=======
-    #roll back to 2d array
-    c = np.reshape(c, (60*60, -1))
 
-    return c
 
 
 def narrow(df,power,var,new_var):
@@ -188,4 +179,4 @@ def narrow(df,power,var,new_var):
     new_sum = df[new_var].sum()
     df[new_var] = (df[new_var]*original_sum/new_sum).astype(int)
     return df
->>>>>>> temp
+
