@@ -61,9 +61,9 @@ def get_field_grid(b):
 
 
 
-def plot_field(df,bins=60):
+def plot_field(df,bins=60,var='B'):
     fig = plt.figure(figsize=(10, 8))
-    plt.hist2d(df['x'], df['y'], weights=df['B'], bins=bins,cmap='inferno')
+    plt.hist2d(df['x'], df['y'], weights=df[var], bins=bins,cmap='inferno')
     plt.xlabel('x (mm)')
     plt.ylabel('y (mm)')
     cbar = plt.colorbar()

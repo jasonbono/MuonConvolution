@@ -181,6 +181,6 @@ def narrow(df,power,var,new_var):
     original_sum = df[var].sum()
     df[new_var] = df[var]**power
     new_sum = df[new_var].sum()
-    df[new_var] = (df[new_var]*original_sum/new_sum).astype(int)
+    df[new_var] = (df[new_var]*original_sum/new_sum).astype(int).astype(float)
     return df
 
