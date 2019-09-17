@@ -59,11 +59,8 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-<<<<<<< HEAD
 \title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Current Approach to Muon Convolution}} % Article title
-=======
 \title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{An Approach to Muon Convolution}} % Article title
->>>>>>> temp
 
 \author{
 \large
@@ -98,11 +95,8 @@
 %----------------------------------------------------------------------------------------
 
 
-<<<<<<< HEAD
-\section{Frameworks}
-=======
+
 \section{Framework}
->>>>>>> temp
 \begin{multicols}{2} % Two-column layout throughout the main article text
 \subsection{Moments Method}
 \subsubsection{Average Field}
@@ -150,20 +144,11 @@ where $c_n(t)$ is, for now, a general weighting factor that can absorb various e
 \left\langle B \right\rangle =
  \Sigma_n w_n \frac{ \int b_{n}(t) m_{n}(t) c_n(t) dt}{\int c_n(t) dt}
 \end{equation}
-<<<<<<< HEAD
-
-
-=======
->>>>>>> temp
 Provided time is discretized finely enough so that, within any single interval, the spacial structures are effectively constant, we can write
 \begin{equation}
 	\left\langle B \right\rangle = 
 	\Sigma_{n} w_n \frac{\Sigma_{t} b_{nt} m_{nt} c_{nt}}{\Sigma_t c_{nt}}
 \end{equation}
-<<<<<<< HEAD
-
-=======
->>>>>>> temp
 Letting $\Sigma_{t} c_{nt} = C_n $ gives
 \begin{equation}
 \boxed{
@@ -193,20 +178,12 @@ and that contribution in a single time-slice at $\tau$ as
 %%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Error in Average Field}
 Assume that the muon and field structures ($m_{nt}$ and $b_{nt}$) are uncorrelated, and that the uncertainties on $C_n$ and $w_n$ are zero. The variance in the nth moment at time $t$, $\sigma^2_{nt} \equiv (\Delta \left\langle B \right\rangle_{nt})^2$, is 
-<<<<<<< HEAD
-
-=======
->>>>>>> temp
 \begin{equation}
 \sigma^2_{nt} =
 (\frac{d \left\langle B \right\rangle_{nt}}{db_{nt}}\Delta b_{nt})^2 +
 (\frac{d \left\langle B \right\rangle_{nt}}{dm_{nt}}\Delta m_{nt})^2 + 
 (\frac{d \left\langle B \right\rangle_{nt}}{dc_{nt}}\Delta c_{nt})^2 
 \end{equation}
-<<<<<<< HEAD
-
-=======
->>>>>>> temp
 or 
 \begin{equation}
 \boxed{
@@ -214,12 +191,7 @@ or
 \frac{w^2_n}{C^2_n}[(m_{nt} c_{nt} \Delta b_{nt})^2 + (b_{nt} c_{nt} \Delta m_{nt})^2  + (b_{nt} m_{nt} \Delta c_{nt})^2 ]
 }
 \end{equation}
-<<<<<<< HEAD
-
 substituting the above expression into
-=======
-Substituting the above expression into
->>>>>>> temp
 \begin{equation}
 \sigma^2_{n} = \Sigma_t  \sigma^2_{nt} 
 \end{equation}
@@ -241,12 +213,77 @@ gives
 \end{equation}
 
 
-<<<<<<< HEAD
-=======
 \subsubsection{Moments Method in Practice}
+The multipole expansion of some field, $F$, is
+\begin{equation}
+F(r,\theta) =   c_0 +  \sum_{n=1} r^{n} (c_{n} \cos(n \theta)  + s_{n} \sin(n \theta )   )
+\end{equation}
+Note that integrating gives
+\begin{equation}
+\int^{R}_{r = 0} \int^{2\pi}_{\theta = 0} F(r,\theta) r d\theta dr =    
+c_0 \int^{R}_{r = 0} \int^{2\pi}_{\theta = 0}  r d\theta dr = 
+c_0 \pi R^2
+\end{equation}
+Whereas the higher order moments can be found by
+\begin{equation}
+\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \cos(n\theta) d\theta dr=   
+\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} r^{2n}  c_n \cos^2(n\theta) d\theta dr =   
+c_n  2 \pi \int^{R}_{r = 0}   r^{2n}   dr =  
+c_n \frac{  2 \pi R^{2n+1}}{2n + 1} 
+\end{equation}
+and, similarly, 
+\begin{equation}
+\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \sin(n\theta) d\theta dr=   
+s_n \frac{  2 \pi R^{2n+1}}{2n + 1} 
+\end{equation}
+Let's say the field we have is normalized. Then by definition, 
+\begin{equation}
+\int^{R}_{r = 0} \int^{2\pi}_{\theta = 0} F(r,\theta) r d\theta dr =    
+1
+\end{equation}
+so
+\begin{equation}
+c_0 = \frac{1}{\pi R^2}
+\end{equation}
+and if we limit the field to the unit disk, then
+\begin{equation}
+c_0 = \frac{1}{\pi}
+\end{equation}
+We also get
+\begin{equation}
+c_n = \frac{2n+1}{2\pi} \int^{1}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \cos(n\theta) d\theta dr
+\end{equation}
+and
+\begin{equation}
+s_n = \frac{2n+1}{2\pi} \int^{1}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \sin(n\theta) d\theta dr 
+\end{equation}
+if space is discretized in x and y, the polar integrals become Cartesian sums by letting $r^n=(x^2 + y^2)^{n/2}$ and  $\theta = \arctan(x/y)$ to get
+\begin{equation}
+c_n = \frac{2n+1}{2\pi} \sum_{x}  \sum_{y} 
+F(x,y) (x^2 + y^2)^{n/2} \cos(n \arctan(x/y))
+\end{equation}
+and
+\begin{equation}
+s_n = \frac{2n+1}{2\pi} \sum_{x}  \sum_{y} 
+F(x,y) (x^2 + y^2)^{n/2} \sin(n \arctan(x/y))
+\end{equation}
+note that for $n=1$ we get
+\begin{equation}
+c_1 = \frac{3}{2\pi} \sum_{x}  \sum_{y} 
+F(x,y)  \frac{\sqrt{x^2 + y^2}}{\sqrt{1 + (x/y)^2 }} = 
+\frac{3}{2\pi} \sum_{x}  \sum_{y} 
+F(x,y) y
+\end{equation}
+and
+\begin{equation}
+s_1 = \frac{3}{2\pi} \sum_{x}  \sum_{y} 
+F(x,y)  \frac{x \sqrt{x^2 + y^2}}{y \sqrt{1 + (x/y)^2 }} = 
+\frac{3}{2\pi} \sum_{x}  \sum_{x} 
+F(x,y) y
+\end{equation}
 
 
->>>>>>> temp
+
 
 
 \subsection{The Matrix Method}
