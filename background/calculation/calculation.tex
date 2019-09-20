@@ -213,7 +213,9 @@ gives
 \end{equation}
 
 
-\subsubsection{Moments Method in Practice}
+
+
+\subsubsection{Beam Moments}
 The multipole expansion of some field, $F$, is
 \begin{equation}
 F(r,\theta) =   c_0 +  \sum_{n=1} r^{n} (c_{n} \cos(n \theta)  + s_{n} \sin(n \theta )   )
@@ -224,65 +226,144 @@ Note that integrating gives
 c_0 \int^{R}_{r = 0} \int^{2\pi}_{\theta = 0}  r d\theta dr = 
 c_0 \pi R^2
 \end{equation}
-Whereas the higher order moments can be found by
+or 
 \begin{equation}
-\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \cos(n\theta) d\theta dr=   
-\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} r^{2n}  c_n \cos^2(n\theta) d\theta dr =   
-c_n  2 \pi \int^{R}_{r = 0}   r^{2n}   dr =  
-c_n \frac{  2 \pi R^{2n+1}}{2n + 1} 
+\boxed{
+c_0 = \frac{\int^{R}_{r = 0} \int^{2\pi}_{\theta = 0} F(r,\theta) r d\theta dr}{A}
+}
 \end{equation}
-and, similarly, 
+where the area $A = \pi R^2$. In other words, $c_0$ is the average value of the field over the area in question.
+
+The higher order moments can be found by
 \begin{equation}
-\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \sin(n\theta) d\theta dr=   
-s_n \frac{  2 \pi R^{2n+1}}{2n + 1} 
+\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \cos(n\theta) r d\theta dr=   
+\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} r^{2n + 1}  c_n \cos^2(n\theta) d\theta dr =   
+c_n  \int^{R}_{r = 0}   r^{2n + 1}   dr =  
+c_n \frac{R^{2n+2}}{2n + 2} 
 \end{equation}
-Let's say the field we have is normalized. Then by definition, 
+so 
 \begin{equation}
-\int^{R}_{r = 0} \int^{2\pi}_{\theta = 0} F(r,\theta) r d\theta dr =    
-1
+\boxed{
+c_n = \frac{2n + 2}{R^{2n+2}} \int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^{n+1} \cos(n\theta) d\theta dr
+}
 \end{equation}
-so
+Similarly, we have
 \begin{equation}
-c_0 = \frac{1}{\pi R^2}
-\end{equation}
-and if we limit the field to the unit disk, then
-\begin{equation}
-c_0 = \frac{1}{\pi}
-\end{equation}
-We also get
-\begin{equation}
-c_n = \frac{2n+1}{2\pi} \int^{1}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \cos(n\theta) d\theta dr
-\end{equation}
-and
-\begin{equation}
-s_n = \frac{2n+1}{2\pi} \int^{1}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^n \sin(n\theta) d\theta dr 
-\end{equation}
-if space is discretized in x and y, the polar integrals become Cartesian sums by letting $r^n=(x^2 + y^2)^{n/2}$ and  $\theta = \arctan(x/y)$ to get
-\begin{equation}
-c_n = \frac{2n+1}{2\pi} \sum_{x}  \sum_{y} 
-F(x,y) (x^2 + y^2)^{n/2} \cos(n \arctan(x/y))
-\end{equation}
-and
-\begin{equation}
-s_n = \frac{2n+1}{2\pi} \sum_{x}  \sum_{y} 
-F(x,y) (x^2 + y^2)^{n/2} \sin(n \arctan(x/y))
-\end{equation}
-note that for $n=1$ we get
-\begin{equation}
-c_1 = \frac{3}{2\pi} \sum_{x}  \sum_{y} 
-F(x,y)  \frac{\sqrt{x^2 + y^2}}{\sqrt{1 + (x/y)^2 }} = 
-\frac{3}{2\pi} \sum_{x}  \sum_{y} 
-F(x,y) y
-\end{equation}
-and
-\begin{equation}
-s_1 = \frac{3}{2\pi} \sum_{x}  \sum_{y} 
-F(x,y)  \frac{x \sqrt{x^2 + y^2}}{y \sqrt{1 + (x/y)^2 }} = 
-\frac{3}{2\pi} \sum_{x}  \sum_{x} 
-F(x,y) y
+\boxed{
+s_n = \frac{2n + 2}{R^{2n+2}} \int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F(r,\theta) r^{n+1} \sin(n\theta) d\theta dr
+}
 \end{equation}
 
 
+
+As a test, we can compute $c_n$ and $s_n$ for the general field. We get
+\begin{equation}
+c_0 = \frac{\int^{R}_{r = 0} \int^{2\pi}_{\theta = 0} F(r,\theta) r d\theta dr}{A} = 
+\frac{\int^{R}_{r = 0} \int^{2\pi}_{\theta = 0} c_0 r d\theta dr}{A} = 
+c_0
+\end{equation}
+and
+\begin{equation}
+c_n =
+\frac{(2n + 2)\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} 
+(c_0 +  \sum_{n=1} r^{n} (c_{n} \cos(n \theta)  + s_{n} \sin(n \theta )   )) r^{n+1} \cos(n\theta) d\theta dr}{R^{2n+2}} 
+\end{equation}
+or
+\begin{equation}
+c_n =
+\frac{(2n + 2)}{R^{2n+2}} 
+\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} 
+r^{n} c_{n} \cos^2(n \theta)  r^{n+1} d\theta dr = c_n
+\end{equation}
+Similarly, 
+\begin{equation}
+s_n =
+\frac{(2n + 2)\int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} 
+	(c_0 +  \sum_{n=1} r^{n} (c_{n} \cos(n \theta)  + s_{n} \sin(n \theta )   )) r^{n+1} \sin(n\theta) d\theta dr}{R^{2n+2}}  = s_n
+\end{equation}
+which is what we set out to show. \\
+\\
+We have a B field and an (in general  un-normalized) muon distribution, which we can call $F_B$ and $F_M$. What we want is the average value of the multiplication of the two fields, 
+\begin{equation}
+\bar{B} = \frac{\int F_B F_M dA}{\int F_M dA}
+\end{equation}
+where we will call the denominator
+\begin{equation}
+\boxed{
+I_0 \equiv \int F_M dA
+}
+\end{equation}
+We express the two fields generally by
+\begin{equation}
+F_B(r,\theta) =   c_0 +  \sum_{n=1} r^{n} (c_{n} \cos(n \theta)  + s_{n} \sin(n \theta )   )
+\end{equation}
+and
+\begin{equation}
+F_M(r,\theta) =   C_0 +  \sum_{n=1} r^{n} (C_{n} \cos(n \theta)  + S_{n} \sin(n \theta )   )
+\end{equation}
+Then we get 
+\begin{equation}
+\bar{B} = \frac{1}{I_0}\int^{2\pi}_{\theta=0} \int^R_{r=0} (c_0C_0 + \sum_{n=1}r^{2n}(c_nC_n\cos^2(n \theta) + s_nS_n\sin^2(n \theta) )   )  r dr d\theta
+\end{equation}
+where all cross terms have been dropped because they vanish in the integral over $\theta$. Further reducing the above expression, we get 
+\begin{equation}
+\bar{B} = \frac{1}{I_0}(2 \pi R c_0C_0 + \sum_{n=1} \int^R_{r=0} r^{2n + 1}(c_nC_n + s_n S_n ) dr  ) 
+\end{equation}
+or 
+\begin{equation}
+\bar{B} = 
+\frac{A c_0 C_0}{I_0} + \frac{1}{I_0}\sum_{n=1} \frac{R^{2n + 2}}{2n+2}(c_nC_n + s_n S_n ) 
+\end{equation}
+Now define what we'll call the beam moments
+\begin{equation}
+\boxed{
+	I_n \equiv \int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F_M(r,\theta) r^{n+1} \cos(n\theta) dr d\theta = C_n\frac{R^{2n+2}}{2n + 2}
+}
+\end{equation}
+and
+\begin{equation}
+\boxed{
+	J_n \equiv \int^{R}_{r = 0}  \int^{2\pi}_{\theta = 0} F_M(r,\theta) r^{n+1} \sin(n\theta) dr d\theta = S_n\frac{R^{2n+2}}{2n + 2}
+}
+\end{equation}
+so that we can rewrite $\bar{B}$ as
+\begin{equation}
+\bar{B} = 
+\frac{A c_0 C_0}{I_0} + \frac{1}{I_0}\sum_{n=1}(c_n I_n + s_n J_n ) 
+\end{equation}
+and since $I_0 = A C_0$, we can write
+\begin{equation}
+\boxed{
+\bar{B} = 
+c_0 + \frac{1}{I_0}\sum_{n=1}(c_n I_n + s_n J_n ) 
+}
+\end{equation}
+Note that if the muon distribution is normalized then by definition $I_0 = 1$. \\
+\\
+In practice, it is instructive to rewrite the beam moments as
+\begin{equation}
+	I_n = \int F(r,\theta) r^{n} \cos(n\theta) dA 
+\end{equation}
+and
+\begin{equation}
+J_n = \int F(r,\theta) r^{n} \sin(n\theta) dA 
+\end{equation}
+so that expression in Cartesian coordinates, using $r^n=(x^2 + y^2)^{n/2}$ and $n \theta = n \arctan(x/y)$, and discretization is straightforward
+\begin{equation}
+I_n =  \int F_M(x,y) (x^2 + y^2)^{n/2} \cos(n  \arctan(\frac{x}{y})) dA 
+\end{equation}
+or 
+\begin{equation}
+\boxed{
+I_n =  \sum_{x,y} F_M(x,y) (x^2 + y^2)^{n/2} \cos(n  \arctan(\frac{x}{y}))
+}
+\end{equation}
+and
+\begin{equation}
+\boxed{
+	J_n =  \sum_{x,y} F_M(x,y) (x^2 + y^2)^{n/2} \sin(n  \arctan(\frac{x}{y}))
+}
+\end{equation}
 
 
 
