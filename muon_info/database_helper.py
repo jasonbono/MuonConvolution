@@ -12,36 +12,51 @@ import sys
 
 
 def muon_formatter(start='2018-04-22 00:00:00',end='2018-04-25 00:00:00'):
-
     
-    
-    #read the gm2dq.subrun_time table into a df
+    #Read the gm2dq.subrun_time table into a df
     #The start/stop time here is what sets the limits for all subsequent databases
     #which occurs implicitly through the inner joining
     runs = get_runs(start="2018-04-22 00:00:00",end="2018-04-25 00:00:00")
     df_time = pd.DataFrame.from_records(runs,columns=["run", "subrun", "start_time", "end_time"])
     df_time.set_index(['run','subrun'],inplace=True)
-
     
-    #read the gm2dq.ctagswithdqc table into a df
+    #Read the gm2dq.ctagswithdqc table into a df
     ctags = get_dqc_ctags()
     df_ctag = pd.DataFrame.from_records(ctags,columns=["run", "subrun", "ctags"])
     df_ctag.set_index(['run','subrun'],inplace=True)
 
-    
-    #read the gm2dq.subrun_status table into a df
+    #Read the gm2dq.subrun_status table into a df
     flags = get_flags()
     cols = get_labels(table='gm2dq.subrun_status')
     df_flags = pd.DataFrame.from_records(flags,columns=cols)
     df_flags.set_index(['run','subrun'],inplace=True)
 
-    ...
+    
+    #Do an inner join to get a df with all relevant information from the database
+    df_total = pd.merge(df_time, df_ctag, on=['run','subrun'], how='inner')
+    df_total = pd.merge(df_total, df_flags, on=['run','subrun'], how='inner')
+    
+    
+    #Read the gm2ctag_dqm table into a df
+    poor = get_poor_ctags(start="2018-04-22 00:00:00",end="2018-04-25 00:00:00")
+    df_poor = pd.DataFrame.from_records(poor,columns=["poor_time", "poor_ctags"])
+    #get runs/subruns for the df of gm2ctag_dqm
+    times = df_poor['poor_time'].tolist()
+    l = [time_to_run(t, df_total) for t in times]
+    df_poor['run'] = [v[0][0] for v in l]
+    df_poor['subrun'] = [v[0][1] for v in l]
+    df_poor.set_index(['run','subrun'],inplace=True)
+
+    #Do another inner join 
+    df_total = pd.merge(df_total, df_poor, on=['run','subrun'], how='inner')
+
+    return df_total
 
 
 
 def connect(db='localhost'):
     '''
-        establishs a connection to the gm2 online database
+        establishes a connection to the gm2 online database
     '''
     
     if (db ==  'localhost'):
@@ -162,3 +177,60 @@ def get_flags(db='localhost', table='gm2dq.subrun_status'):
     conn.rollback()
     
     return rows
+
+
+
+
+def get_poor_ctags(start,end, db='localhost', table='gm2ctag_dqm') :
+    
+    '''
+        takes in a user specified start and end time as a range
+        nominally for the gm2ctag_dqm table
+        
+        returns the time and ctag values for times within the specified interval
+        '''
+    
+    #connect
+    conn,curr = connect(db)
+    
+    #Prepare the sql command and execute
+    what = f"select time, ctags from {table} "
+    where = f"where time >= '{start}' and time <= '{end}' "
+    order = "order by time ASC"
+    sql = what + where + order
+    curr.execute(sql)
+    conn.commit()
+    
+    #fetch the data
+    rows = curr.fetchall()
+    
+    return rows
+
+
+
+
+def time_to_run(time,df):
+    
+    """
+        this is a function that returns a run/subrun based off a time
+        it takes in a specific time and a dataframe
+        the time is searched for in the dataframe which is assumed to have runs/subruns associated with times in each of the dataframe's rows
+        
+        it returns a run/subrun based off the time
+        
+    """
+    
+    #Convert to date/time
+    time = pd.to_datetime(time)
+    
+    #select only the rows that span the specified time
+    mask =  (time >  df['start_time']) & (time <=  df['end_time'])
+    
+    #Get the list of tuples of the runs/subruns
+    ans = df[mask].index.tolist()
+    
+    #if the list is empty, set the run and subrun to -1
+    if (ans == []):
+        ans = [(-1,-1)]
+    
+    return ans
