@@ -285,7 +285,7 @@ which is what we set out to show. \\
 \\
 We have a B field and an (in general  un-normalized) muon distribution, which we can call $F_B$ and $F_M$. What we want is the average value of the multiplication of the two fields, 
 \begin{equation}
-\bar{B} = \frac{\int F_B F_M dA}{\int F_M dA}
+\left\langle B \right\rangle = \frac{\int F_B F_M dA}{\int F_M dA}
 \end{equation}
 where we will call the denominator
 \begin{equation}
@@ -328,13 +328,13 @@ and
 \end{equation}
 so that we can rewrite $\bar{B}$ as
 \begin{equation}
-\bar{B} = 
+\left\langle B \right\rangle = 
 \frac{A c_0 C_0}{I_0} + \frac{1}{I_0}\sum_{n=1}(c_n I_n + s_n J_n ) 
 \end{equation}
 and since $I_0 = A C_0$, we can write
 \begin{equation}
 \boxed{
-\bar{B} = 
+\left\langle B \right\rangle = 
 c_0 + \frac{1}{I_0}\sum_{n=1}(c_n I_n + s_n J_n ) 
 }
 \end{equation}
@@ -342,11 +342,11 @@ Note that if the muon distribution is normalized then by definition $I_0 = 1$. \
 \\
 In practice, it is instructive to rewrite the beam moments as
 \begin{equation}
-	I_n = \int F(r,\theta) r^{n} \cos(n\theta) dA 
+	I_n = \int F_M(r,\theta) r^{n} \cos(n\theta) dA 
 \end{equation}
 and
 \begin{equation}
-J_n = \int F(r,\theta) r^{n} \sin(n\theta) dA 
+J_n = \int F_M(r,\theta) r^{n} \sin(n\theta) dA 
 \end{equation}
 so that expression in Cartesian coordinates, using $r^n=(x^2 + y^2)^{n/2}$ and $n \theta = n \arctan(x/y)$, and discretization is straightforward
 \begin{equation}
