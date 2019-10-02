@@ -36,7 +36,7 @@ def cartesian_field(b,x,y):
 
 
 
-def get_field_grid(b):
+def get_field_grid(b,var='B'):
     """
         Input: the field multipole moments in ppm
         Output: A pandas df with cartesian coordinates the value of the field
@@ -51,11 +51,11 @@ def get_field_grid(b):
     vals = np.array(vals)
 
     #now make a pandas df and fill it with the grid values
-    col_names =  ['x', 'y', 'B']
+    col_names =  ['x', 'y', var]
     df  = pd.DataFrame(columns = col_names)
     df['x'] = vals[:,0]
     df['y'] = vals[:,1]
-    df['B'] = vals[:,2]
+    df[var] = vals[:,2]
     
     return df
 
