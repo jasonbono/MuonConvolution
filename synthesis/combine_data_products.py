@@ -38,7 +38,7 @@ def field_ctag_dqm(start='2018-04-22 00:00:00',
     
     
     #Put the Postgres database info into a dataframe
-    df_ctag = muon_formatter(start='2018-04-22 00:00:00',end='2018-04-25 00:00:00')
+    df_ctag = muon_formatter(start=start,end=end)
     
     #Put the field info into a dataframe
     path = 'field_info/data/'

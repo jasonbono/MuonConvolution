@@ -16,7 +16,7 @@ def muon_formatter(start='2018-04-22 00:00:00',end='2018-04-25 00:00:00'):
     #Read the gm2dq.subrun_time table into a df
     #The start/stop time here is what sets the limits for all subsequent databases
     #which occurs implicitly through the inner joining
-    runs = get_runs(start="2018-04-22 00:00:00",end="2018-04-25 00:00:00")
+    runs = get_runs(start=start,end=end)
     df_time = pd.DataFrame.from_records(runs,columns=["run", "subrun", "start_time", "end_time"])
     df_time.set_index(['run','subrun'],inplace=True)
     
@@ -98,7 +98,8 @@ def get_runs(start, end, db='localhost', table='gm2dq.subrun_time'):
         returns all run, subrun, start_time (for the subrun),
         and end_time (for the run) within the specified time range
         for (nominally) the gm2dq.subrun_time table
-        
+       
+       note: the DQC is in chicago time, but rachel's field product is in UTC
     '''
     
     
