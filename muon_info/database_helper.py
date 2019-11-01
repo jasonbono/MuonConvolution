@@ -11,7 +11,12 @@ import sys
 
 
 
-def muon_formatter(start='2018-04-22 00:00:00',end='2018-04-25 00:00:00'):
+def muon_formatter(start='2018-04-22 00:00:00',end='2018-04-26 00:00:00'):
+    
+    #convert start and end time to string
+    start = str(start)
+    end = str(end)
+    
     
     #Read the gm2dq.subrun_time table into a df
     #The start/stop time here is what sets the limits for all subsequent databases
@@ -38,7 +43,7 @@ def muon_formatter(start='2018-04-22 00:00:00',end='2018-04-25 00:00:00'):
     
     
     #Read the gm2ctag_dqm table into a df
-    poor = get_poor_ctags(start="2018-04-22 00:00:00",end="2018-04-25 00:00:00")
+    poor = get_poor_ctags(start=start,end=end)
     df_poor = pd.DataFrame.from_records(poor,columns=["poor_time", "poor_ctags"])
     #get runs/subruns for the df of gm2ctag_dqm
     times = df_poor['poor_time'].tolist()
@@ -102,6 +107,10 @@ def get_runs(start, end, db='localhost', table='gm2dq.subrun_time'):
        note: the DQC is in chicago time, but rachel's field product is in UTC
     '''
     
+    
+    #convert start and end time to string
+    start = str(start)
+    end = str(end)
     
     #connect
     conn,curr = connect(db)
@@ -189,7 +198,12 @@ def get_poor_ctags(start,end, db='localhost', table='gm2ctag_dqm') :
         nominally for the gm2ctag_dqm table
         
         returns the time and ctag values for times within the specified interval
-        '''
+    '''
+    
+    
+    #convert start and end time to string
+    start = str(start)
+    end = str(end)
     
     #connect
     conn,curr = connect(db)
