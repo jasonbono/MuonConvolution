@@ -146,7 +146,16 @@ def get_multipole_moments(N,x,y,weights):
 
 
 ##############################
-def get_df_tracker(file = "/Users/bono/Desktop/gm2FieldAnalysis/MuonConvolution/tracker_info/sample_data/beamSpot.txt"):
+def get_df_tracker(file = "/Users/bono/Desktop/gm2FieldAnalysis/MuonConvolution/tracker_info/sample_data/beamSpot.txt", correct_offset=False):
+    
+    """
+    This function takes in a text file provided by the tracker team and returns a dataframe that represents a histogram of the beam as seen by the tracker
+    
+    The radial and vertical positions are in mm. There are two stations, so the dataframe has a station column
+    
+    The option to correct offset corrects for the radial tangency offset (see saskia's thesis, page 125)
+    
+    """
     names=['radial', 'vertical', 'counts']
     df = pd.read_csv(file, sep=" ",names=names)
     df.index.name = 'index'
@@ -166,6 +175,12 @@ def get_df_tracker(file = "/Users/bono/Desktop/gm2FieldAnalysis/MuonConvolution/
     df["radial"] = df["radial"].astype('float')
     df["vertical"] = df["vertical"].astype('float')
     
+    
+    #optionally, apply the radial offset (hardcoded number in mm,  based on Saskia's Thesis, page 126)
+    if(apply_offset==True):
+        df["radial"] = df["radial"] - 1.09
+    
+    #reset the index
     df.reset_index(inplace=True)
     
     return df
