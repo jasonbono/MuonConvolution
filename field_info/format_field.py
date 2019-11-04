@@ -4,11 +4,27 @@ import pandas as pd
 
 
 ##################
-def get_field_df(file):
+def get_field_df(file,n_multipoles=4):
     df = pd.read_csv(file, sep=" ", header=None)
-    df.columns = ["EpochTime", "D", "eD",
-                        "NQ", "eNQ","SQ", "eSQ",
-                        "NS", "eNS"]
+    if (n_multipoles==4):
+        df.columns = ["EpochTime",
+                            "D", "eD",
+                            "NQ", "eNQ",
+                            "SQ", "eSQ",
+                            "NS", "eNS"]
+    elif (n_multipoles==9):
+        df.columns = ["EpochTime",
+                            "D", "eD",
+                            "NQ", "eNQ",
+                            "SQ", "eSQ",
+                            "NS", "eNS",
+                            "SS", "eSS",
+                            "NO", "eNO",
+                            "SO", "eSO",
+                            "ND", "eND",
+                            "SD", "eSD",
+                                        ]
+    
     df['DateTime'] = pd.to_datetime(df['EpochTime'],unit='s')
     df = df.set_index('DateTime')
     del df['EpochTime']

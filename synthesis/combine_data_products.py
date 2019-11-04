@@ -15,7 +15,7 @@ import pandasql as ps
 import os
 
 
-def pickle_field(file):
+def pickle_field(file,make_local_time=True):
 
     #Read the field file and put into a dataframe
     df_field = get_field_df(file)
@@ -23,11 +23,15 @@ def pickle_field(file):
     df_field.reset_index(inplace=True)
     
     #Add the ctags
-    df_total = fast_add_ctags(df_field)
+    df_total = fast_add_ctags(df_field,make_local_time=make_local_time)
     
     
     #the output name is just the input with a different extension
     output = os.path.splitext(file)[0]
+    #if you do not correct for timezone, call it a bad offset
+    if (make_local_time==False):
+        output = output + 'BADOFFSET'
+        print("bad offset \n")
     output = output + '.pkl'
     print('saving ' + output)
     #save df as pickle file
