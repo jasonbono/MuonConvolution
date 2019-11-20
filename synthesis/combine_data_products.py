@@ -15,15 +15,15 @@ import pandasql as ps
 import os
 
 
-def pickle_field(file,make_local_time=True):
+def pickle_field(file, make_local_time=True, n_multipoles=4):
 
     #Read the field file and put into a dataframe
-    df_field = get_field_df(file)
+    df_field = get_field_df(file,n_multipoles)
     #Reset the index
     df_field.reset_index(inplace=True)
     
     #Add the ctags
-    df_total = fast_add_ctags(df_field,make_local_time=make_local_time)
+    df_total = fast_add_ctags(df_field, make_local_time=make_local_time)
     
     
     #the output name is just the input with a different extension

@@ -13,7 +13,7 @@ from beam_moments import get_normalized_distribution_moments as gndm
 
 
 
-def moments_method(c,s,I_norm,J_norm):
+def moments_method(c,s,I_norm,J_norm,is_error=False):
     """
         takes in the beam multipole moments in the
         world standard format (ie c and s for normal and skew)
@@ -27,4 +27,8 @@ def moments_method(c,s,I_norm,J_norm):
     B = np.sum(c*I_norm)
     #the skew components (0*0 + Sum_{n=1} s[n]*J[n]/J[0])
     B += np.sum(s*J_norm)
+    
+    #if we are adding contributions to error, it must be done in quadrature
+    if(is_error):
+        B = np.sqrt(np.sum((c**2)*(I_norm**2)) + np.sum((s**2)*(J_norm**2)))
     return B

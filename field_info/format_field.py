@@ -22,8 +22,7 @@ def get_field_df(file,n_multipoles=4):
                             "NO", "eNO",
                             "SO", "eSO",
                             "ND", "eND",
-                            "SD", "eSD",
-                                        ]
+                            "SD", "eSD"]
     
     df['DateTime'] = pd.to_datetime(df['EpochTime'],unit='s')
     df = df.set_index('DateTime')
