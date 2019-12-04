@@ -3,9 +3,9 @@
 
 We have particles called muons moving through a magnetic field. The field changes with location and time. The muons' trajectories are complex. **We want to know the average magnetic field experienced by the muons.** 
 
-(An analogy is finding the average water temperature experienced by a school of fish as they swim  through various depths and currents, and throughout the day.)
+(An analogy is finding the average water temperature experienced by a school of :fish: as they swim  through various depths and currents, and throughout the day.)
 
-### How: A (very) simplified explination
+### How: A (very) simplified explanation
 Ultimately, we get 2D projections of the muon distribution, eg:
 ![image](https://drive.google.com/uc?export=view&id=174tx8yv8ITmqFdtiiO3TUytxuUOKJIFe)
 
