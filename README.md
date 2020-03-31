@@ -48,6 +48,11 @@ TODO: add built with
 5. Create a new Pull Request
 
 
+See the tutorials in the base directory to get started!
+
+
+
+
 ## Authors
 
 * **Jason Bono** - *Initial work* - [JasonBono](https://github.com/JasonBono)
