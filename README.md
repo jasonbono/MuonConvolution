@@ -26,20 +26,20 @@ These instructions will help get you a copy of the project up and running on you
 ### Prerequisites
 
 - python 3
+- jupyter (tested on version 5.7.8)
 - numpy (tested on version 1.17.0)
 - pandas (tested on version 0.25.0)
 - psycopg2 (tested on version 2.8.2)
-- optional : pyROOT (for reading of ROOT data in python. Alternatively, you can reformat ROOT data via C++)
+- optional : pyroot (for reading of ROOT data in python. Alternatively, you can reformat ROOT data via C++)
+- optional: matplotlib
 
 Some of the required data is in the gm2 online database. To manually browse the database via terminal, try:
 
 	psql -U gm2_reader -d gm2_online_prod -h localhost -p 5434
 
 
-## Built With
-TODO: add built with
 
-## Contributing
+### Contributing
 
 1. Fork it (<https://github.com/jasonbono/MuonConvolution/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
@@ -48,19 +48,25 @@ TODO: add built with
 5. Create a new Pull Request
 
 
-See the tutorials in the base directory to get started!
+### Tutorials: Your first task
 
+The foundation of this analysis is the "grid" and "moments" methods. If you can run and understand the notebooks `~/grid_tutorial.ipynb` and `~/moments_tutorial.ipynb`, and understand the libs that they use, then you should be able to develop freely from there
 
+### A suggested second task
 
+Now that you get the basics, check out `~/analysis/systematics/beam_motion.ipynb` to see a foundational method for evaluating systematic uncertainty.
+
+Similarly, see `~/analysis/systematics/close_orbit_distortions.ipynb` to see how closed orbit distortions are handeled.
+
+### Looking forward: getting a handle on various soures of error
+
+There is no one correct way to propegate error for this project. Check out my incomplete note at `background/calculation/calculation.pdf` for some ideas. 
 
 ## Authors
 
 * **Jason Bono** - *Initial work* - [JasonBono](https://github.com/JasonBono)
 
-
-## Acknowledgments
-
-* Thank you to Brendan Kiburg 
+ 
 
 	
 
