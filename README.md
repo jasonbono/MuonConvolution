@@ -48,19 +48,23 @@ Some of the required data is in the gm2 online database. To manually browse the 
 5. Create a new Pull Request
 
 
-### Tutorials: Your first task
+### Your first task: tutorials!
 
 The foundation of this analysis is the "grid" and "moments" methods. If you can run and understand the notebooks `~/grid_tutorial.ipynb` and `~/moments_tutorial.ipynb`, and understand the libs that they use, then you should be able to develop freely from there
 
-### A suggested second task
+### A suggested second task: muon position error evaluation
 
 Now that you get the basics, check out `~/analysis/systematics/beam_motion.ipynb` to see a foundational method for evaluating systematic uncertainty.
 
 Similarly, see `~/analysis/systematics/close_orbit_distortions.ipynb` to see how closed orbit distortions are handeled.
 
-### Looking forward: getting a handle on various soures of error
+### A suggested third task: statistical and field error propegation
 
-There is no one correct way to propegate error for this project. Check out my incomplete note at `background/calculation/calculation.pdf` for some ideas. 
+There is no one correct way to propegate field error for this project. To see my approach, check out `/analysis/run1_pipeline/analyze_all_runs.ipynb`
+
+Also, check out my incomplete note at `background/calculation/calculation.pdf` for some ideas. *Warning* Some of the note has false reasoning and incorrect conclusions!
+
+
 
 ## Authors
 
